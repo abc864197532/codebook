@@ -1,3 +1,5 @@
+const int N = 100000;
+
 vector <int> adj[N];
 vector <int> pt(N, -1), sz(N, 1), idx(N, -1), hd(N, -1), par(N, -1), depth(N);
 int _id = 0;

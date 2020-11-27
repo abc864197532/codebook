@@ -19,4 +19,7 @@ struct Dsu {
         sz[x] = 0;
         return true;
     }
+    bool same(int u, int v) {
+        return Find(u) == Find(v);
+    }
 };
