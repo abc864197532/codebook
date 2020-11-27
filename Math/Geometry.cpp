@@ -1,6 +1,6 @@
 struct Pt {
-	lli x, y;
-	Pt (lli _x = 0, lli _y = 0) : x(_x), y(_y) {}
+	long long x, y;
+	Pt (long long _x = 0, long long _y = 0) : x(_x), y(_y) {}
 	Pt operator + (const Pt &other) {
 		return Pt(x + other.x, y + other.y);
 	}
@@ -10,16 +10,16 @@ struct Pt {
 	Pt operator * (const int &k) {
 		return Pt(x * k, y * k);
 	}
-	lli operator * (const Pt &other) { // dot
+	long long operator * (const Pt &other) { // dot
 		return x * other.x + y * other.y;
 	}
-	lli operator ^ (const Pt &other) { // cross
+	long long operator ^ (const Pt &other) { // cross
 		return x * other.y - y * other.x;
 	}
 };
 
 int ori (Pt o, Pt a, Pt b) {
-	lli k = (o - a) ^ (o - b);
+	long long k = (o - a) ^ (o - b);
 	return (k < 0 ? -1 : (k > 0 ? 1 : 0));
 }
 
