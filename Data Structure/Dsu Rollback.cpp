@@ -6,14 +6,10 @@ struct Dsu {
     vector <int> dsu, size;
     vector <op> stk;
     vector <int> point;
-    Dsu (int _n): n(_n) {
-        dsu.resize(n);
-        size.resize(n);
-        cc = n;
-        for (int i = 0; i < n; ++i) {
-            dsu[i] = i;
-            size[i] = 1;
-        }
+    Dsu (int _n): n(_n), cc(_n) {
+        dsu.assign(n, 0);
+        size.assign(n, 1);
+        iota(dsu.begin(), dsu.end(), 0);
     }
     int Find(int a) {
         if (dsu[a] == a) return a;

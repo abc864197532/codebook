@@ -1,9 +1,9 @@
 struct Dsu {
-    int n;
-    vector <int> dsu, sz;
-    Dsu (int _n) : n(_n) {
-        dsu.resize(n);
-        sz.assign(n, 1);
+    int n, cc;
+    vector <int> dsu, size;
+    Dsu (int _n) : n(_n), cc(_n) {
+        dsu.assign(n, 0);
+        size.assign(n, 1);
         iota(dsu.begin(), dsu.end(), 0);
     }
     int Find(int v) {
@@ -13,10 +13,11 @@ struct Dsu {
     bool Union(int v, int u) {
         int x = Find(v), y = Find(u);
         if (x == y) return false;
-        if (sz[x] > sz[y]) swap(x, y);
+        if (size[x] > size[y]) swap(x, y);
         dsu[x] = y;
-        sz[y] += sz[x];
-        sz[x] = 0;
+        size[y] += size[x];
+        size[x] = 0;
+        cc--;
         return true;
     }
     bool same(int u, int v) {
