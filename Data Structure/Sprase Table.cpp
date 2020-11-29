@@ -12,13 +12,11 @@ void buildSt() {
 }
 
 int queryMn(int l, int r) {
-    if (r == l) return 1 << 30;
     int g = __lg(r - l);
     return min(StMn[l][g], StMn[r - (1 << g)][g]);
 }
 
 int queryMx(int l, int r) {
-    if (r == l) return -1;
     int g = __lg(r - l);
     return max(StMx[l][g], StMx[r - (1 << g)][g]);
 }

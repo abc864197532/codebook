@@ -1,12 +1,13 @@
 const int N = 100000;
 
 vector <int> adj[N];
-vector <int> pt(N, -1), sz(N, 1), idx(N, -1), hd(N, -1), par(N, -1), depth(N);
-int _id = 0;
+int pt[N], sz[N], id[N], hd[N], par[N], dep[N], _t;
 
 void dfs(int v = 0, int pa = -1) {
+    sz[v] = 1;
     par[v] = pa;
-    depth[v] = ~pa ? depth[pa] + 1 : 0;
+    pt[v] = -1;
+    dep[v] = ~pa ? dep[pa] + 1 : 0;
     for (int u : adj[v]) if (u != pa) {
             dfs(u, v);
             sz[v] += sz[u];
@@ -14,34 +15,28 @@ void dfs(int v = 0, int pa = -1) {
         }
 }
 
-void hld(int v = 0, int pa = -1, int h = 0) {
-    if (v == -1) return;
-    idx[v] = _id++;
+void hld(int v, int pa, int h) {
+    if (!~v) return;
+    id[v] = _t++;
     hd[v] = h;
     hld(pt[v], v, h);
     for (int u : adj[v]) if (u != pa && u != pt[v]) {
-            hld(u, v, u);
-        }
+        hld(u, v, u);
+    }
 }
 
-void modify(int u, int v, int x) {
-    while (hd[u] != hd[v]) {
-        if (depth[hd[u]] < depth[hd[v]]) swap(u, v);
-        // add from idx[hd[u]] to idx[u] + 1
-        u = par[hd[u]];
-    }
-    if (depth[u] > depth[v]) swap(u, v);
-    // add from u to v + 1
+void build() {
+    _t = 0;
+    dfs(0, -1);
+    hld(0, -1, 0);
 }
 
-int query(int u, int v) {
-    int ans = 0;
+int query (int u, int v, int x) {
     while (hd[u] != hd[v]) {
-        if (depth[hd[u]] < depth[hd[v]]) swap(u, v);
-        // add ans from idx[hd[u]] to idx[u] + 1
+        if (dep[hd[u]] < dep[hd[v]]) swap(u, v);
+        // from id[hd[u]] to id[u] + 1
         u = par[hd[u]];
     }
-    if (depth[u] > depth[v]) swap(u, v);
-    // add ans from u to v + 1
-    return ans;
+    if (dep[u] > dep[v]) swap(u, v);
+    // from id[u] to id[v] + 1
 }

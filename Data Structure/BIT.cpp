@@ -1,11 +1,12 @@
+const int N = 100000;
+
 struct BIT {
-    int n;
-    vector <long long> bit;
-    BIT (int _n) : n(_n) {
-        bit.assign(n + 1, 0);
+    long long bit[N];
+    BIT ()  {
+        for (int i = 0; i < N; ++i) bit[i] = 0;
     }
     void add (int p, long long a) {
-        for (int i = p; i <= n; i += (i & -i)) bit[i] += a;
+        for (int i = p; i < N; i += (i & -i)) bit[i] += a;
     }
     long long query (int p) {
         long long all = 0;
@@ -14,8 +15,8 @@ struct BIT {
     }
     int kth (long long k) {
         int ans = 0;
-        for (int i = 1 << __lg(n); i > 0; i >>= 1) {
-            if (ans + i <= n and bit[ans + i] < k) k -= bit[ans += i];
+        for (int i = 1 << __lg(N); i > 0; i >>= 1) {
+            if (ans + i < N and bit[ans + i] < k) k -= bit[ans += i];
         }
         return ans + 1;
     }

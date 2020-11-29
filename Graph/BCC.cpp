@@ -1,5 +1,3 @@
-const int N = 100000;
-
 vector <int> adj[N], newadj[N];
 bool vis[N];
 int low[N], dep[N], bcc[N], p[N], _id = 0;
@@ -11,13 +9,13 @@ void dfs(int v, int pa) {
     stk.push(v);
     low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
     for (int u : adj[v]) if (u != pa) {
-        if (vis[u]) {
-            low[v] = min(low[v], low[u]);
-        } else {
-            dfs(u, v);
-            low[v] = min(low[v], low[u]);
+            if (vis[u]) {
+                low[v] = min(low[v], low[u]);
+            } else {
+                dfs(u, v);
+                low[v] = min(low[v], low[u]);
+            }
         }
-    }
     if (low[v] == dep[v]) {
         // bridge
         int x;
@@ -29,10 +27,11 @@ void dfs(int v, int pa) {
     }
 }
 
-void build_bcc(int n) {
+void build (int n) {
+    for (int i = 0; i < n; ++i) vis[i] = false;
     dfs(0, -1);
     for (int v = 1; v < n; ++v) if (low[v] == dep[v]) {
-        newadj[bcc[v]].push_back(bcc[p[v]]);
-        newadj[bcc[p[v]]].push_back(bcc[v]);
-    }
+            newadj[bcc[v]].push_back(bcc[p[v]]);
+            newadj[bcc[p[v]]].push_back(bcc[v]);
+        }
 }

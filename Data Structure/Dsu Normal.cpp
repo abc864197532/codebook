@@ -1,10 +1,12 @@
+const int N = 100000;
+
 struct Dsu {
-    int n, cc;
-    vector <int> dsu, size;
+    int dsu[N], size[N], n, cc;
     Dsu (int _n) : n(_n), cc(_n) {
-        dsu.assign(n, 0);
-        size.assign(n, 1);
-        iota(dsu.begin(), dsu.end(), 0);
+        for (int i = 0; i < n; ++i) {
+            dsu[i] = i;
+            size[i] = 1;
+        }
     }
     int Find(int v) {
         if (dsu[v] == v) return v;

@@ -7,7 +7,6 @@ struct Line {
  
 struct LiChao {
 	int l, r, m;
-	vector <Line> v;
 	Line line;
 	LiChao* ch[2] = {NULL, NULL};
 	LiChao (int l, int r) : l(l), r(r), m(l + r >> 1) {
@@ -20,7 +19,6 @@ struct LiChao {
 				line = seg;
 			}
 		} else {
-		    if (m == 0) v.pb(seg);
 			if (line.m > seg.m) swap(seg, line);
 			if (line.v(m) > seg.v(m)) {
 				swap(seg, line);
@@ -34,8 +32,8 @@ struct LiChao {
 	}
 	long long query(int x) {
 		if (r - l == 1) return line.v(x);
-		if (x < m and ch[0]) return min(ch[0]->query(x), line.v(x));
-		else if (x >= m and ch[1]) return min(ch[1]->query(x), line.v(x));
+		if (x < m && ch[0]) return min(ch[0]->query(x), line.v(x));
+		else if (x >= m && ch[1]) return min(ch[1]->query(x), line.v(x));
 		else return line.v(x);
 	}
 };
