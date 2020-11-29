@@ -1,4 +1,4 @@
-const int N = 100000;
+const int N = 100000;  
 
 vector <pair <int, long long>> adj[N];
 long long dis[N];

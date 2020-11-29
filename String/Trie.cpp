@@ -1,4 +1,4 @@
-struct trie {
+struct trie {  
     vector <vector <int>> ch;
     vector <int> cnt;
     trie() {extend();}

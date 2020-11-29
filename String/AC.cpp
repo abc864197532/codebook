@@ -1,4 +1,4 @@
-struct AC {
+struct AC {  
     vector <vector <int>> ch;
     vector <int> cnt, f;
     AC () {extend();}

@@ -1,4 +1,4 @@
-/* p == (a << n) + 1
+/* p == (a << n) + 1  
    g = pow(root, (p - 1) / n)
    n    1<<n        p          a    root
    5    32          97         3    5

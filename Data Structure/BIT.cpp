@@ -1,4 +1,4 @@
-const int N = 100000;
+const int N = 100000;  
 
 struct BIT {
     long long bit[N];

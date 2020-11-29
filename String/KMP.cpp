@@ -1,4 +1,4 @@
-vector <int> build_fail(string &s) {
+vector <int> build_fail(string &s) {  
     vector <int> f(s.length() + 1, 0);
     int k = 0;
     for (int i = 1; i < s.length(); ++i) {

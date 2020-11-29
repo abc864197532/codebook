@@ -1,4 +1,4 @@
-vector <int> build_sa (string s) {
+vector <int> build_sa (string s) {  
     s += '$';
     int n = s.length();
     vector <int> r(n), sa(n);

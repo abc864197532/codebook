@@ -1,4 +1,4 @@
-const int N = 100000;
+const int N = 100000;  
 
 struct Dsu {
     int dsu[N], size[N], n, cc;

@@ -1,4 +1,4 @@
-const int N = 100000;
+const int N = 100000;  
 
 vector <int> adj[N], deg(N, 0);
 

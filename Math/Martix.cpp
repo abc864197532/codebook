@@ -1,4 +1,4 @@
-const int mod = 1e9 + 7;
+const int mod = 1e9 + 7;  
 
 struct mat {
     int n;

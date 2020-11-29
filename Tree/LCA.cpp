@@ -1,4 +1,4 @@
-const int N = 100000, logN = 18;
+const int N = 100000, logN = 18;  
 
 vector <int> adj[N];
 int jump[N][logN], in[N], out[N], dep[N], _t;

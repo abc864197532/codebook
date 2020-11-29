@@ -1,3 +1,5 @@
+const int N = 100000; 
+
 vector <int> adj[N], newadj[N];
 bool vis[N];
 int low[N], dep[N], bcc[N], p[N], _id = 0;
@@ -31,7 +33,7 @@ void build (int n) {
     for (int i = 0; i < n; ++i) vis[i] = false;
     dfs(0, -1);
     for (int v = 1; v < n; ++v) if (low[v] == dep[v]) {
-            newadj[bcc[v]].push_back(bcc[p[v]]);
-            newadj[bcc[p[v]]].push_back(bcc[v]);
-        }
+        newadj[bcc[v]].push_back(bcc[p[v]]);
+        newadj[bcc[p[v]]].push_back(bcc[v]);
+    }
 }

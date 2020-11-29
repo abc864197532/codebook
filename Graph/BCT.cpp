@@ -1,3 +1,5 @@
+const int N = 100000; 
+
 vector <int> adj[N], newadj[N * 2];
 bool vis[N], cut[N];
 vector <int> bcc[N];
@@ -44,9 +46,9 @@ void build(int n) {
     // id >= N means cut point
     dfs(0, -1);
     for (int v = 0; v < n; ++v) if (cut[v]) {
-            for (int u : bcc[v]) {
-                newadj[v + N].push_back(u);
-                newadj[u].push_back(v + N);
-            }
+        for (int u : bcc[v]) {
+            newadj[v + N].push_back(u);
+            newadj[u].push_back(v + N);
         }
+    }
 }

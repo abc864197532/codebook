@@ -10,5 +10,5 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> oset
 
 cc_hash_table<int, int> Hash;
 
-// like map, but faster
+// like map, but much faster
 

@@ -1,4 +1,4 @@
-const int N = 100000, logN = 17;
+const int N = 100000, logN = 17;  
 
 int StMn[N][logN], StMx[N][logN];
 

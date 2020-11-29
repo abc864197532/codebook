@@ -9,10 +9,10 @@ void dfs(int v = 0, int pa = -1) {
     pt[v] = -1;
     dep[v] = ~pa ? dep[pa] + 1 : 0;
     for (int u : adj[v]) if (u != pa) {
-            dfs(u, v);
-            sz[v] += sz[u];
-            if (pt[v] == -1 || sz[pt[v]] < sz[u]) pt[v] = u;
-        }
+        dfs(u, v);
+        sz[v] += sz[u];
+        if (pt[v] == -1 || sz[pt[v]] < sz[u]) pt[v] = u;
+    }
 }
 
 void hld(int v, int pa, int h) {

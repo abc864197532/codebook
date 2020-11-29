@@ -1,4 +1,4 @@
-struct Seg {
+struct Seg {  
     int l, r, m;
     long long val, lz;
     Seg* ch[2];
