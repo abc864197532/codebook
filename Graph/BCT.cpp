@@ -11,25 +11,25 @@ void dfs(int v, int pa) {
     low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
     int child = 0;
     for (int u : adj[v]) if (u != pa) {
-            if (vis[u]) {
-                low[v] = min(low[v], dep[u]);
-            } else {
-                dfs(u, v);
-                low[v] = min(low[v], low[u]);
-                child++;
-                low[v] = min(low[v], low[u]);
-                if (low[u] >= dep[v]) {
-                    // v is a cut point
-                    cut[v] = true;
-                    int x;
-                    do {
-                        x = stk.top(); stk.pop();
-                        bcc[x].push_back(_id);
-                    } while (x != u);
-                    _id++;
-                }
+        if (vis[u]) {
+            low[v] = min(low[v], dep[u]);
+        } else {
+            dfs(u, v);
+            low[v] = min(low[v], low[u]);
+            child++;
+            low[v] = min(low[v], low[u]);
+            if (low[u] >= dep[v]) {
+                // v is a cut point
+                cut[v] = true;
+                int x;
+                do {
+                    x = stk.top(); stk.pop();
+                    bcc[x].push_back(_id);
+                } while (x != u);
+                _id++;
             }
         }
+    }
     if (!~pa && child < 2) cut[v] = false;
 }
 

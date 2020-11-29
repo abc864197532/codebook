@@ -9,13 +9,13 @@ void dfs(int v, int pa) {
     stk.push(v);
     low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
     for (int u : adj[v]) if (u != pa) {
-            if (vis[u]) {
-                low[v] = min(low[v], low[u]);
-            } else {
-                dfs(u, v);
-                low[v] = min(low[v], low[u]);
-            }
+        if (vis[u]) {
+            low[v] = min(low[v], low[u]);
+        } else {
+            dfs(u, v);
+            low[v] = min(low[v], low[u]);
         }
+    }
     if (low[v] == dep[v]) {
         // bridge
         int x;
