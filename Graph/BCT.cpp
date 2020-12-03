@@ -28,7 +28,7 @@ void dfs(int v, int pa) {
                     x = stk.top(); stk.pop();
                     bcc[x].push_back(_id);
                 } while (x != u);
-                _id++;
+                bcc[v].push_back(_id++);
             }
         }
     }
