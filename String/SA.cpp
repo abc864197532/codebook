@@ -1,4 +1,4 @@
-vector <int> build_sa (string s) {  
+vector <int> build_sa (string s) {
     s += '$';
     int n = s.length();
     vector <int> r(n), sa(n);
@@ -18,8 +18,10 @@ vector <int> build_sa (string s) {
         for (int i = n - 1; i >= 0; --i) sa[--cnt[r[nsa[i]]]] = nsa[i];
         nr[sa[0]] = 0;
         for (int i = 1; i < n; ++i) {
-            if (r[sa[i - 1]] == r[sa[i]] && r[(sa[i - 1] + (1 << k)) % n] == r[(sa[i] + (1 << k)) % n]) nr[sa[i]] = nr[sa[i - 1]];
-            else nr[sa[i]] = nr[sa[i - 1]] + 1;
+            int cnt = 0;
+            if (r[sa[i - 1]] != r[sa[i]]) cnt = 1;
+            if (r[(sa[i - 1] + (1 << k)) % n] != r[(sa[i] + (1 << k)) % n]) cnt = 1;
+            nr[sa[i]] = nr[sa[i - 1]] + cnt;
         }
         swap(r, nr);
     }
