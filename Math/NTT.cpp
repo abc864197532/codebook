@@ -36,9 +36,9 @@ long long modpow (long long a, int b, int mod) {
     return ans;
 }
 
-struct FFT {
+struct NTT {
     int mod, rev[N], ninv;
-    FFT (int _mod) : mod(_mod) {
+    NTT (int _mod) : mod(_mod) {
         int lg = __lg(N);
         for (int i = 0; i < N; ++i) {
             int t = 0;
