@@ -10,7 +10,6 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
 #define info() cerr << __PRETTY_FUNCTION__ << ": " << __LINE__ << endl
-#define test(args...) info(), abc("[" + string(#args) + "]", args)
 void abc() {cerr << endl;}
 template <typename T, typename ...U> void abc(T a, U ...b) {
     cerr << a << ' ', abc(b...);
@@ -29,4 +28,15 @@ template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     for (T i : a) {o << (is ? ' ' : '{'), is = true, o << i;}
     return o << '}';
 }
-const int mod = 1e9 + 7, N = 400001, logN = 20, K = 111;
+#ifdef Doludu
+#define test(args...) info(), abc("[" + string(#args) + "]", args)
+#define owo
+#else
+#define test(args...)
+#define owo ios::sync_with_stdio(false); cin.tie(0);
+#endif
+const int mod = 998244353, N = 1000001, logN = 20, K = 111;
+
+int main () { owo
+	
+}
