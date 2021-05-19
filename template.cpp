@@ -28,15 +28,22 @@ template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     for (T i : a) {o << (is ? ' ' : '{'), is = true, o << i;}
     return o << '}';
 }
+template <typename T> struct vv : vector <vector <T>> {
+    vv(int n, int m, int v = 0) : vector <vector <T>> (n, vector <T>(m, v)) {}
+};
+template <typename T> struct vvv : vector <vv <T>> {
+    vvv(int n, int m, int k, int v = 0) : vector <vv <T>> (n, vv <T>(m, k, v)) {}
+};
 #ifdef Doludu
 #define test(args...) info(), abc("[" + string(#args) + "]", args)
 #define owo
 #else
 #define test(args...)
-#define owo ios::sync_with_stdio(false); cin.tie(0);
+#define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
 const int mod = 998244353, N = 1000001, logN = 20, K = 111;
 
-int main () { owo
-	
+int main () {
+    owo;
+    
 }
