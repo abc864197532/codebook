@@ -37,16 +37,16 @@ template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     return o << '}';
 }
 template <typename T> struct vv : vector <vector <T>> {
-    vv(int n, int m, int v = 0) : vector <vector <T>> (n, vector <T>(m, v)) {}
+    vv(int n, int m, T v) : vector <vector <T>> (n, vector <T>(m, v)) {}
     vv() {}
 };
 template <typename T> struct vvv : vector <vv <T>> {
-    vvv(int n, int m, int k, int v = 0) : vector <vv <T>> (n, vv <T>(m, k, v)) {}
+    vvv(int n, int m, int k, T v) : vector <vv <T>> (n, vv <T>(m, k, v)) {}
     vvv() {}
 };
 #ifdef Doludu
 #define test(args...) info(), abc("[" + string(#args) + "]", args)
-#define owo
+#define owo void(0)
 #else
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
