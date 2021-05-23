@@ -1,3 +1,11 @@
+/*
+ *   ##   #####   ####      ####  #    #  ####
+ *  #  #  #    # #    #    #    # #    # #    #
+ * #    # #####  #         #    # #    # #    #
+ * ###### #    # #         #    # # ## # #    #
+ * #    # #    # #    #    #    # ##  ## #    #
+ * #    # #####   ####      ####  #    #  ####
+ */
 #include <bits/stdc++.h>
 using namespace std;
 #define lli long long int
@@ -40,10 +48,10 @@ template <typename T> struct vvv : vector <vv <T>> {
 #define test(args...) info(), abc("[" + string(#args) + "]", args)
 #define owo
 #else
-#define test(args...)
+#define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
-const int mod = 998244353, N = 1000001, logN = 20, K = 111;
+const int mod = 998244353, N = 200001, logN = 20, K = 111;
 
 int main () {
     owo;
