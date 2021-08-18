@@ -1,5 +1,5 @@
 vector <int> adj[N], radj[N];
-
+ 
 struct dominator_tree {
     int vis[N], revis[N], sdom[N], idom[N], par[N], n, id, rt[N], mn[N];
     vector <int> bucket[N], newadj[N];
@@ -11,17 +11,13 @@ struct dominator_tree {
      *           else : idom[u]
      * add edge idom[u] -> u
      */
-    int Find(int u) {
-        if (rt[u] == u) return u;
-        int v = query(rt[u]);
-        if (rt[v] == v) return rt[u] = v;
-        if (vis[sdom[mn[u]]] > vis[sdom[mn[v]]]) mn[u] = mn[v];
-        return rt[u] = v;
-    }
-    int query(int u) {
-        if (rt[u] == u) return u;
-        Find(u);
-        return mn[u];
+    int query(int u, int x = 0) {
+        if (rt[u] == u) return x ? -1 : u;
+        int v = query(rt[u], x + 1);
+        if (v < 0) return u;
+        if (vis[sdom[mn[u]]] > vis[sdom[mn[rt[u]]]]) mn[u] = mn[rt[u]];
+        rt[u] = v;
+        return x ? v : mn[u];
     }
     dominator_tree(int _n) : n(_n), id(0) {
         for (int i = 0; i < n; ++i) rt[i] = i, vis[i] = -1;
