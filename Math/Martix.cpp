@@ -9,8 +9,7 @@ struct mat {
             for (int i = 0; i < n; ++i) val[i][i] = 1;
         }
     }
-    mat (const mat& M) {
-        n = M.n;
+    mat (const mat& M) : n(M.n), mod2(1ll * mod * mod) {
         val.assign(n, vector<long long>(n, 0));
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
@@ -18,6 +17,7 @@ struct mat {
             }
         }
     }
+    mat (vector <vector <long long>> v) : n(v.size()), mod2(1ll * mod * mod), val(v) {}
     mat operator + (const mat& o) {
         mat ans(o);
         for (int i = 0; i < n; ++i) {
