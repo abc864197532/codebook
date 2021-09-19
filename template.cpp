@@ -23,7 +23,7 @@ template <typename T, typename ...U> void abc(T a, U ...b) {
     cout << a << ' ', abc(b...);
 }
 template <typename T> void printv(T l, T r) {
-    while (l != r) cout << *l << " \n"[++l == r];
+    for (; l != r; ++l) cout << *l << " \n"[l + 1 == r];
 }
 template <typename A, typename B> istream& operator >> (istream& o, pair<A, B> &a) {
     return o >> a.X >> a.Y;
@@ -47,7 +47,7 @@ template <typename T> struct vvv : vector <vv <T>> {
 };
 #ifdef Doludu
 #define test(args...) info(), abc("[" + string(#args) + "]", args)
-#define owo void(0)
+#define owo freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout); 
 #else
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
