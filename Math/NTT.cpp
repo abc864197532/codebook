@@ -26,9 +26,9 @@
    26   67108864    469762049  7    3
 */
 
-const int N = 1 << 20;
+const int N = 1 << 20, mod = 998244353, G = 3;
 
-long long modpow (long long a, int b, int mod) {
+long long modpow (long long a, int b) {
     long long ans = 1;
     for (; b; b >>= 1, a = a * a % mod) {
         if (b & 1) ans = ans * a % mod;
@@ -37,30 +37,22 @@ long long modpow (long long a, int b, int mod) {
 }
 
 struct NTT {
-    int mod, rev[N], ninv;
-    NTT (int _mod) : mod(_mod) {
-        int lg = __lg(N);
-        for (int i = 0; i < N; ++i) {
-            int t = 0;
-            for (int j = 0; j < lg; ++j) {
-                if (i >> j & 1) t |= (1 << lg - j - 1);
-            }
-            rev[i] = t;
-        }
-        ninv = modpow(N, mod - 2, mod);
-    }
-
-    const long long w = modpow(3, (mod - 1) / N, mod);
+    NTT () {}
 
     void run (vector <long long> &P, bool inv = false) {
+        int N = P.size();
+        const long long w = modpow(G, (mod - 1) / N);
         int lg = __lg(N);
+        vector <int> rev(N);
 
         // bit reverse
-        for (int i = 0; i < N; ++i) {
-            if (i < rev[i]) swap(P[i], P[rev[i]]);
+        for (int i = 1; i < N; ++i) {
+            rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << (lg - 1));
+            if (i < rev[i])
+                swap(P[i], P[rev[i]]);
         }
 
-        vector <long long> ws = {inv ? modpow(w, mod - 2, mod) : w};
+        vector <long long> ws = {inv ? modpow(w, mod - 2) : w};
         for (int i = 1; i < lg; ++i) ws.push_back(ws.back() * ws.back() % mod);
         reverse(ws.begin(), ws.end());
 
@@ -78,14 +70,17 @@ struct NTT {
         }
 
         if (inv) {
+            long long ninv = modpow(N, mod - 2);
             for (int i = 0; i < N; ++i) {
                 P[i] = P[i] * ninv % mod;
             }
         }
     }
+
     vector <long long> mul (vector <long long> a, vector <long long> b) {
-        run(a);
-        run(b);
+        int N = 1 << __lg(a.size() + b.size() - 1) + 1;
+        a.resize(N), b.resize(N);
+        run(a), run(b);
         for (int i = 0; i < N; ++i) a[i] = a[i] * b[i] % mod;
         run(a, true);
         return a;
