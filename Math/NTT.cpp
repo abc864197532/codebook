@@ -78,11 +78,13 @@ struct NTT {
     }
 
     vector <long long> mul (vector <long long> a, vector <long long> b) {
-        int N = 1 << __lg(a.size() + b.size() - 1) + 1;
+        int m = a.size() + b.size() - 1;
+        int N = 1 << __lg(m) + 1;
         a.resize(N), b.resize(N);
         run(a), run(b);
         for (int i = 0; i < N; ++i) a[i] = a[i] * b[i] % mod;
         run(a, true);
+        a.resize(m);
         return a;
     }
 };
