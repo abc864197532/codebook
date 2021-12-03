@@ -1,11 +1,3 @@
-/*
- *   ##   #####   ####      ####  #    #  ####
- *  #  #  #    # #    #    #    # #    # #    #
- * #    # #####  #         #    # #    # #    #
- * ###### #    # #         #    # # ## # #    #
- * #    # #    # #    #    #    # ##  ## #    #
- * #    # #####   ####      ####  #    #  ####
- */
 #include <bits/stdc++.h>
 using namespace std;
 #define lli long long int
@@ -17,7 +9,6 @@ using namespace std;
 #define Y second
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define info() cout << __PRETTY_FUNCTION__ << ": " << __LINE__ << endl
 void abc() {cout << endl;}
 template <typename T, typename ...U> void abc(T a, U ...b) {
     cout << a << ' ', abc(b...);
@@ -46,15 +37,10 @@ template <typename T> struct vvv : vector <vv <T>> {
     vvv() {}
 };
 #ifdef Doludu
-#define test(args...) info(), abc("[" + string(#args) + "]", args)
+#define test(args...) abc("[" + string(#args) + "]", args)
 #define owo freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout); 
 #else
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
-const int mod = 998244353, N = 200001, logN = 20, K = 111;
-
-int main () {
-    owo;
-    
-}
+const int mod = 998244353, N = 300005, logN = 20, K = 111;
