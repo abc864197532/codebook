@@ -29,6 +29,7 @@ vector <int> build_sa (string s) {
 }
 
 vector <int> build_he(string &s) {
+    s += '$';
     int n = s.length();
     vector <int> sa = build_sa(s), r(n), h(n - 1);
     for (int i = 0; i < n; ++i) r[sa[i]] = i;
