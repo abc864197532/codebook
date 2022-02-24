@@ -8,7 +8,7 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> oset
 // order_of_key
 // find_by_order
 
-cc_hash_table<int, int> Hash;
+cc_hash_table<int, int> m1;
+gp_hash_table<int, int> m2;
 
 // like map, but much faster
-
