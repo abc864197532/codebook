@@ -1,7 +1,7 @@
-struct trie {  
+struct Trie {  
     vector <vector <int>> ch;
     vector <int> cnt;
-    trie() {extend();}
+    Trie() {extend();}
     void extend() {
         ch.pb(vector <int>(26, 0));
         cnt.pb(0);

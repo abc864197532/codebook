@@ -1,5 +1,3 @@
-const int mod = 1e9 + 7;
-
 long long modpow(long long a, int b) {
     long long ans = 1;
     for (; b; b >>= 1, a = a * a % mod) {

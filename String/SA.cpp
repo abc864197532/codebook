@@ -1,41 +1,58 @@
-vector <int> build_sa (string s) {
-    s += '$';
-    int n = s.length();
-    vector <int> r(n), sa(n);
-    iota(all(sa), 0);
-    sort(all(sa), [&](int i, int j) {return s[i] < s[j];});
-    r[sa[0]] = 0;
-    for (int i = 1; i < n; ++i) {
-        if (s[sa[i - 1]] == s[sa[i]]) r[sa[i]] = r[sa[i - 1]];
-        else r[sa[i]] = r[sa[i - 1]] + 1;
-    }
-    for (int k = 0; (1 << k) < n; k++) {
-        vector <int> nsa(n), nr(n);
-        for (int i = 0; i < n; ++i) nsa[i] = (sa[i] - (1 << k) + n) % n;
-        vector <int> cnt(n, 0);
-        for (int i = 0; i < n; ++i) cnt[r[i]]++;
-        for (int i = 1; i < n; ++i) cnt[i] += cnt[i - 1];
-        for (int i = n - 1; i >= 0; --i) sa[--cnt[r[nsa[i]]]] = nsa[i];
-        nr[sa[0]] = 0;
+int sa[N], tmp[2][N], c[N], rk[N], lcp[N];
+
+void buildSA(string s) {
+    int *x = tmp[0], *y = tmp[1], m = 256, n = s.length();
+    for (int i = 0; i < m; ++i)
+        c[i] = 0;
+    for (int i = 0; i < n; ++i)
+        c[x[i] = s[i]]++;
+    for (int i = 1; i < m; ++i)
+        c[i] += c[i - 1];
+    for (int i = n - 1; ~i; --i)
+        sa[--c[x[i]]] = i;
+    for (int k = 1; k < n; k <<= 1) {
+        for (int i = 0; i < m; ++i)
+            c[i] = 0;
+        for (int i = 0; i < n; ++i)
+            c[x[i]]++;
+        for (int i = 1; i < m; ++i)
+            c[i] += c[i - 1];
+        int p = 0;
+        for (int i = n - k; i < n; ++i)
+            y[p++] = i;
+        for (int i = 0; i < n; ++i) if (sa[i] >= k)
+            y[p++] = sa[i] - k;
+        for (int i = n - 1; ~i; --i)
+            sa[--c[x[y[i]]]] = y[i];
+        y[sa[0]] = p = 0;
         for (int i = 1; i < n; ++i) {
-            int cnt = 0;
-            if (r[sa[i - 1]] != r[sa[i]]) cnt = 1;
-            if (r[(sa[i - 1] + (1 << k)) % n] != r[(sa[i] + (1 << k)) % n]) cnt = 1;
-            nr[sa[i]] = nr[sa[i - 1]] + cnt;
+            int a = sa[i], b = sa[i - 1];
+            if (!(x[a] == x[b] && a + k < n && b + k < n && x[a + k] == x[b + k]))
+                p++;
+            y[sa[i]] = p;
         }
-        swap(r, nr);
+        if(n == p + 1)
+            break;
+        swap(x, y), m = p + 1;
     }
-    return sa;
 }
 
-vector <int> build_he(string &s) {
-    s += '$';
-    int n = s.length();
-    vector <int> sa = build_sa(s), r(n), h(n - 1);
-    for (int i = 0; i < n; ++i) r[sa[i]] = i;
-    for (int i = 0, k = 0; i < n - 1; ++i, k = max(k - 1, 0)) {
-        while (s[i + k] == s[sa[r[i] - 1] + k]) k++;
-        h[r[i] - 1] = k;
+void buildLCP(string s) {
+    // lcp[i] = LCP(sa[i - 1], sa[i])
+    // lcp(i, j) = min(lcp[rk[i] + 1], lcp[rk[i] + 2], ..., lcp[rk[j]])
+    int n = s.length(), val = 0;
+    for (int i = 0; i < n; ++i)
+        rk[sa[i]] = i;
+    for (int i = 0; i < n; ++i) {
+        if (!rk[i])
+            lcp[rk[i]] = 0;
+        else {
+            if (val)
+                val--;
+            int p = sa[rk[i] - 1];
+            while (val + i < n && val + p < n && s[val + i] == s[val + p])
+                val++;
+            lcp[rk[i]] = val;
+        }
     }
-    return h;
 }

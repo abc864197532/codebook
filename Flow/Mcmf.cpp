@@ -1,20 +1,21 @@
+template <typename T>
 struct MCMF {
-    const long long INF = 1ll << 60;
-    struct edge {
+    const T INF = 1 << 30;
+    struct Edge {
         int v, id, revid;
-        long long f, c;
-        edge (int _v, long long _f, long long _c, int _id, int _revid) : v(_v), f(_f), c(_c), id(_id), revid(_revid) {}
+        T f, c;
+        Edge (int _v, T _f, T _c, int _id, int _revid) : v(_v), f(_f), c(_c), id(_id), revid(_revid) {}
     };
-    vector <vector <edge>> adj;
+    vector <vector <Edge>> adj;
     vector <pair <int, int>> rt;
-    vector <long long> dis;
+    vector <T> dis;
     int n, s, t;
     MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t) {
         adj.resize(n);
     }
-    void add_edge(int u, int v, long long f, long long c) {
-        adj[u].push_back(edge(v, f, c, adj[u].size(), adj[v].size()));
-        adj[v].push_back(edge(u, 0, -c, adj[v].size(), adj[u].size() - 1));
+    void add_edge(int u, int v, T f, T c) {
+        adj[u].push_back(Edge(v, f, c, adj[u].size(), adj[v].size()));
+        adj[v].push_back(Edge(u, 0, -c, adj[v].size(), adj[u].size() - 1));
     }
     bool SPFA() {
         rt.assign(n, make_pair(-1, -1));
@@ -27,7 +28,7 @@ struct MCMF {
         while (q.size()) {
             int v = q.front(); q.pop();
             vis[v] = false;
-            for (edge &e : adj[v]) if (e.f > 0 && dis[e.v] > dis[v] + e.c) {
+            for (Edge &e : adj[v]) if (e.f > 0 && dis[e.v] > dis[v] + e.c) {
                 dis[e.v] = dis[v] + e.c;
                 rt[e.v] = make_pair(v, e.id);
                 if (!vis[e.v]) {
@@ -38,12 +39,12 @@ struct MCMF {
         }
         return dis[t] != INF;
     }
-    pair <long long, long long> runFlow() { // cost, flow
-        long long cost = 0, flow = 0;
+    pair <T, T> runFlow() { // cost, flow
+        T cost = 0, flow = 0;
         while (SPFA()) {
             vector <pair <int, int>> E;
             int v = t;
-            long long addflow = INF;
+            T addflow = INF;
             while (v != s) {
                 E.push_back(rt[v]);
                 addflow = min(addflow, adj[rt[v].first][rt[v].second].f);

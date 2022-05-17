@@ -38,9 +38,14 @@ template <typename T> struct vvv : vector <vv <T>> {
 };
 #ifdef Doludu
 #define test(args...) abc("[" + string(#args) + "]", args)
-#define owo freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout); 
+#define owo freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout)
 #else
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
 const int mod = 998244353, N = 300005, logN = 20, K = 111;
+
+int main () {
+    owo;
+    
+}

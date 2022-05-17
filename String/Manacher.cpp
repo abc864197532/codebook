@@ -1,6 +1,7 @@
 vector <int> manacher(string &s) {
     string t = "^#";
-    for (char c : s) t += c, t += '#';
+    for (char c : s) 
+        t += c, t += '#';
     t += '&';
     int n = t.length();
     vector <int> r(n, 0);

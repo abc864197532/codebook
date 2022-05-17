@@ -1,34 +1,45 @@
-const int N = 100000;
-
 vector <int> adj[N];
-int sz[N], cd_pa[N];
 
-void dfs1 (int v, int pa) { // count size
-    sz[v] = 1;
-    for (int u : adj[v]) if (u != pa and cd_pa[u] == -1) {
-        dfs1(u, v);
-        sz[v] += sz[u];
+struct CentroidDecomposition {
+    // 0-index
+    vector <int> sz, cd_pa;
+    int n;
+    CentroidDecomposition(int _n) : n(_n) {
+        sz.assign(n, 0), cd_pa.assign(n, -2);
+        dfs_cd(0, -1);
     }
-}
-
-int dfs2 (int v, int pa, int n) { // find cen
-    for (int u : adj[v]) if (u != pa and cd_pa[u] == -1 and sz[u] > n / 2) {
-        return dfs2(u, v, n);
+    void dfs_sz(int v, int pa) {
+        sz[v] = 1;
+        for (int u : adj[v]) if (u != pa && cd_pa[u] == -2)
+            dfs_sz(u, v), sz[v] += sz[u];
     }
-    return v;
-}
-
-void cd (int v, int pa) { // build cdt
-    dfs1(v, pa);
-    int c = dfs2(v, pa, sz[v]);
-    cd_pa[c] = ~pa ? pa : -2;
-    for (int u : adj[c]) if (cd_pa[u] == -1) {
-        cd(u, c);
+    int dfs_cen(int v, int pa, int s) {
+        for (int u : adj[v]) if (u != pa && cd_pa[u] == -2) {
+            if (sz[u] * 2 > s)
+                return dfs_cen(u, v, s);
+        }
+        return v;
     }
-    if (pa == -1) cd_pa[c] = -1;
-}
-
-void build(int n) {
-    for (int i = 0; i < n; ++i) cd_pa[i] = -1;
-    cd(0, -1);
-}
+    vector <int> block;
+    void dfs_cd(int v, int pa) {
+        dfs_sz(v, pa);
+        int c = dfs_cen(v, pa, sz[v]);
+        // centroid D&C
+        for (int u : adj[c]) if (cd_pa[u] == -2) {
+            dfs_ans(u, c);
+            // do something
+        }
+        for (int u : adj[c]) if (cd_pa[u] == -2) {
+            dfs_cd(u, c);
+        }
+    }
+    void dfs_ans(int v, int pa) {
+        // calculate path through centroid
+        // do something
+        // remember delete path from the same size
+        for (int u : adj[v]) if (u != pa && cd_pa[u] == -2)
+            dfs_ans(u, v);
+    }
+    // Centroid Tree Property:
+    // let k = lca(u, v) in Centroid Tree, then dis(u, v) = dis(u, k) + dis(k, v)
+};

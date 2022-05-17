@@ -1,23 +1,33 @@
-const int N = 100000;  
-
+template <typename T>
 struct BIT {
-    long long bit[N];
-    BIT ()  {
-        for (int i = 0; i < N; ++i) bit[i] = 0;
+    // single point add, prefix query sum
+    const int offset = 3;
+    vector <T> val;
+    int n;
+    BIT (int _n) : n(_n + offset * 2) {
+        val.assign(n, 0);
     }
-    void add (int p, long long a) {
-        for (int i = p; i < N; i += (i & -i)) bit[i] += a;
+    void add(int p, T v) {
+        for (p += offset; p < n; p += p & (-p))
+            val[p] += v;
     }
-    long long query (int p) {
-        long long all = 0;
-        for (int i = p; i > 0; i -= (i & -i)) all += bit[i];
-        return all;
+    T query(int p) {
+        T ans = 0;
+        for (p += offset; p > 0; p -= p & (-p))
+            ans += val[p];
+        return ans;
     }
-    int kth (long long k) {
+    T query(int l, int r) {
+        // query [l, r)
+        return query(r - 1) - query(l - 1);
+    }
+    int kth (int k) {
+        // 1-index, return kth smallest number
+        // 1 <= k && k <= current size
         int ans = 0;
-        for (int i = 1 << __lg(N); i > 0; i >>= 1) {
-            if (ans + i < N and bit[ans + i] < k) k -= bit[ans += i];
+        for (int i = 1 << __lg(n); i > 0; i >>= 1) {
+            if (ans + i < n && val[ans + i] < k) k -= val[ans += i];
         }
-        return ans + 1;
+        return ans - offset + 1;
     }
 };

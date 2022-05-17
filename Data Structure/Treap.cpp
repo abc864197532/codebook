@@ -1,74 +1,47 @@
 struct Treap {
-    Treap *l, *r;
-    int key, pri, sz;
-    Treap (int _key) {
-        key = _key;
-        l = r = NULL;
-        pri = rand();
-        sz = 1;
+    int pri, sz, val;
+    Treap *tl, *tr;
+    Treap (int x) : val(x), sz(1), pri(rand()), tl(NULL), tr(NULL) {}
+    void pull() {
+        sz = (tl ? tl->sz : 0) + 1 + (tr ? tr->sz : 0);
+    }
+    void out() {
+        if (tl)
+            tl->out();
+        cout << val << ' ';
+        if (tr)
+            tr->out();
     }
 };
 
-int size(Treap* t) {return t ? t->sz : 0;}
-void pull(Treap* t) {t->sz = size(t->l) + 1 + size(t->r);}
+void print(Treap *t) {
+    t->out();
+    cout << endl;
+}
 
-Treap* merge(Treap* a, Treap* b) {
-    if (!a or !b) return a ? a : b;
-    else if (a->pri > b->pri) {
-        a->r = merge(a->r, b);
-        pull(a);
+Treap* merge(Treap *a, Treap *b) {
+    if (!a || !b)
+        return a ? a : b;
+    if (a->pri < b->pri) {
+        a->tr = merge(a->tr, b);
+        a->pull();
         return a;
     } else {
-        b->l = merge(a, b->l);
-        pull(b);
+        b->tl = merge(a, b->tl);
+        b->pull();
         return b;
     }
 }
 
 void split(Treap* t, int k, Treap* &a, Treap* &b) {
     if (!t) a = b = NULL;
-    else if (t->key <= k) {
+    else if ((t->tl ? t->tl->sz : 0) + 1 <= k) {
         a = t;
-        split(t->r, k, a->r, b);
-        pull(a);
+        split(t->tr, k - (t->tl ? t->tl->sz : 0) - 1, a->tr, b);
+        a->pull();
     } else {
         b = t;
-        split(t->l, k, a, b->l);
-        pull(b);
-    }
-}
-
-Treap* insert(Treap* t, int k) {
-    Treap *tl, *tr;
-    split(t, k, tl, tr);
-    return merge(tl, merge(new Treap(k), tr));
-}
-
-Treap* remove(Treap* t, int k) {
-    Treap *tl, *tr;
-    split(t, k - 1, tl, t);
-    split(t, k, t, tr);
-    return merge(tl, tr);
-}
-
-int kth(Treap* t, int k) {
-    if (size(t->l) + 1 < k) {
-        return kth(t->r, k - size(t->l) - 1);
-    } else if (size(t->l) == k) {
-        return t->key;
-    } else {
-        return kth(t->l, k);
-    }
-}
-
-int index(Treap* t, int x) {
-    if (!t) return -1;
-    if (t->key > x) {
-        return index(t->l, x);
-    } else if (t->key == x) {
-        return size(t->l);
-    } else {
-        int k = index(t->r, x);
-        return k == -1 ? -1 : size(t->l) + 1 + k;
+        split(t->tl, k, a, b->tl);
+        b->pull();
     }
 }

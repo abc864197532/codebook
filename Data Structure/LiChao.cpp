@@ -1,39 +1,75 @@
-struct Line {
-    long long m, k; // y = mx + k
-    long long v(long long x) {
-        return m * x + k;
-    }
+struct line {
+	long long m, k;
+	line (long long _m, long long _k) : m(_m), k(_k) {}
+	long long f(long long x) {return m * x + k;}
 };
 
-struct LiChao {
-    int l, r, m;
-    Line best;
-    LiChao* ch[2] = {NULL, NULL};
-    LiChao(int _l, int _r) : l(_l), r(_r), m(l + r >> 1) {
-        best.m = 0;
-        best.k = 1ll << 60;
-    }
-    void insert(Line seg) {
-        if (r - l == 1) {
-            if (best.v(l) > seg.v(l)) {
-                swap(best, seg);
-            }
-        } else {
-            if (best.m > seg.m) swap(seg, best);
-            if (best.v(m) > seg.v(m)) {
-                swap(seg, best);
-                if (!ch[1]) ch[1] = new LiChao(m, r);
-                ch[1]->insert(seg);
-            } else {
-                if (!ch[0]) ch[0] = new LiChao(l, m);
-                ch[0]->insert(seg);
-            }
-        }
-    }
-    long long query(long long x) {
-        if (r - l == 1) return best.v(x);
-        if (x < m && ch[0]) return min(ch[0]->query(x), best.v(x));
-        if (x >= m && ch[1]) return min(ch[1]->query(x), best.v(x));
-        return best.v(x);
-    }
+struct Seg {
+	// query max
+	// 0-indexed, [l, r)
+	int l, r, m;
+	line best;
+	Seg* ch[2];
+	Seg (int _l, int _r) : l(_l), r(_r), m(l + r >> 1), best(line(0, -1ll << 60)) {
+		if (r - l > 1) {
+			ch[0] = new Seg(l, m);
+			ch[1] = new Seg(m, r);
+		}
+	}
+	void add(line cur) {
+		if (r - l == 1) {
+			if (cur.f(l) > best.f(l)) {
+				best = cur;
+			}
+		} else {
+			if (cur.m < best.m)
+				swap(cur, best);
+			if (cur.f(m) > best.f(m)) {
+				swap(cur, best);
+				ch[0]->add(cur);
+			} else {
+				ch[1]->add(cur);
+			}
+		}
+	}
+	long long query(int x) {
+		if (r - l == 1)
+			return best.f(x);
+		return max(best.f(x), ch[x >= m]->query(x));
+	}
+};
+
+struct Seg {
+	// query min
+	// 0-indexed, [l, r)
+	int l, r, m;
+	line best;
+	Seg* ch[2];
+	Seg (int _l, int _r) : l(_l), r(_r), m(l + r >> 1), best(line(0, 1ll << 60)) {
+		if (r - l > 1) {
+			ch[0] = new Seg(l, m);
+			ch[1] = new Seg(m, r);
+		}
+	}
+	void add(line cur) {
+		if (r - l == 1) {
+			if (cur.f(l) < best.f(l)) {
+				best = cur;
+			}
+		} else {
+			if (cur.m < best.m)
+				swap(cur, best);
+			if (cur.f(m) < best.f(m)) {
+				swap(cur, best);
+				ch[1]->add(cur);
+			} else {
+				ch[0]->add(cur);
+			}
+		}
+	}
+	long long query(int x) {
+		if (r - l == 1)
+			return best.f(x);
+		return min(best.f(x), ch[x >= m]->query(x));
+	}
 };

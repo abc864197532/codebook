@@ -1,11 +1,18 @@
-struct SMAWK {
-    int ans[N], tmp[N];
+long long query(int l, int r) {
+    // ...
+}
 
+struct SMAWK {
+    // Condition: 
+    // If M[1][0] < M[1][1] then M[0][0] < M[0][1]
+    // If M[1][0] == M[1][1] then M[0][0] <= M[0][1]
+    // For all i, find r_i s.t. M[i][r_i] is maximum || minimum.
+    int ans[N], tmp[N];
     void interpolate(vector <int> l, vector <int> r) {
         int n = l.size(), m = r.size();
         vector <int> nl;
         for (int i = 1; i < n; i += 2) {
-            nl.pb(l[i]);
+            nl.push_back(l[i]);
         }
         run(nl, r);
         for (int i = 1, j = 0; i < n; i += 2) {
@@ -20,7 +27,7 @@ struct SMAWK {
                 curl = tmp[l[i - 1]];
             if (i + 1 < n)
                 curr = tmp[l[i + 1]];
-            lli res = query(l[i], r[curl]);
+            long long res = query(l[i], r[curl]);
             ans[l[i]] = r[curl];
             for (int j = curl + 1; j <= curr; ++j) {
                 lli nxt = query(l[i], r[j]);
@@ -29,7 +36,6 @@ struct SMAWK {
             }
         }
     }
-
     void reduce(vector <int> l, vector <int> r) {
         int n = l.size(), m = r.size();
         vector <int> nr;
@@ -46,7 +52,6 @@ struct SMAWK {
         }
         run(l, nr);
     }
-
     void run(vector <int> l, vector <int> r) {
         int n = l.size(), m = r.size();
         if (max(n, m) <= 2) {
@@ -63,4 +68,4 @@ struct SMAWK {
             reduce(l, r);
         }
     }
-} smawk;
+};
