@@ -9,15 +9,4 @@ stirling number
 Virtual Tree
 Euler Cycle
 
-Dijkstra
-BellmanFord (find negative cycle)
-SPFA
 Matroid Intersection
-
-Banana
-Convex Hull
-Dynamic Convex Hull
-Polar Angle
-Closet Pair
-Rotating Caliper
-Rotate Sweepline

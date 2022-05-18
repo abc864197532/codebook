@@ -6,6 +6,7 @@ struct SCC {
     vector <int> dfs_ord, idx;
     vector <bool> vis;
     int n, nscc;
+    SCC () = default;
     SCC (int _n) : n(_n), nscc(0) {
         vis.assign(n, false), idx.assign(n, -1);
         for (int i = 0; i < n; ++i) if (!vis[i])

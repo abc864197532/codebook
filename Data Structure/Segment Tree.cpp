@@ -5,6 +5,7 @@ struct Seg {
     int l, r, m;
     T val, lz;
     Seg *ch[2];
+    Seg () = default;
     Seg (int _l, int _r) : l(_l), r(_r), m(l + r >> 1), val(0), lz(0) {
         if (r - l > 1) {
             ch[0] = new Seg(l, m);

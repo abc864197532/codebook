@@ -46,7 +46,6 @@ struct TwoDimensionAddAndSum {
     vector <array <int, 4>> E[N];
     vector <array <int, 4>> Q[N];
     vector <long long> ans;
- 
     void add_event(int x1, int y1, int x2, int y2, int v) {
         E[x1].pb({y1, y2,  v, -v * x1});
         E[x2].pb({y1, y2, -v, v * x2});

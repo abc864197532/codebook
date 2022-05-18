@@ -6,6 +6,7 @@ struct PointBCC {
     vector <int> low, dep, par, stk;
     vector <bool> cut;
     int n, nbcc;
+    PointBCC () = default;
     PointBCC (int _n) : n(_n), nbcc(0) {
         low.assign(n, -1), dep.assign(n, -1), idx.assign(n, vector <int> ());
         par.assign(n, -1), cut.assign(n, false);

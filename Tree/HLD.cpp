@@ -4,6 +4,7 @@ struct HLD {
     // 0-index
     vector <int> dep, pt, hd, idx, sz, par, vis;
     int n, _t;
+    HLD () = default;
     HLD (int _n) : n(_n) {
         pt.assign(n, -1), hd.assign(n, -1), par.assign(n, -1);
         idx.assign(n, 0), sz.assign(n, 0), dep.assign(n, 0), vis.assign(n, 0);

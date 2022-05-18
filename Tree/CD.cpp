@@ -4,7 +4,8 @@ struct CentroidDecomposition {
     // 0-index
     vector <int> sz, cd_pa;
     int n;
-    CentroidDecomposition(int _n) : n(_n) {
+    CentroidDecomposition () = default;
+    CentroidDecomposition (int _n) : n(_n) {
         sz.assign(n, 0), cd_pa.assign(n, -2);
         dfs_cd(0, -1);
     }

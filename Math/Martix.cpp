@@ -2,6 +2,7 @@ struct mat {
     int n;
     long long mod2;
     vector <vector <long long>> val;
+    mat () = default;
     mat (int _n, int _mode = 0) : n(_n), mod2(1ll * mod * mod) {
         // mode 1 -> I, other -> O
         val.assign(n, vector<long long>(n, 0));

@@ -42,4 +42,3 @@ struct LineTree {
         order = dsu.cc[dsu.rt[0]], weight = dsu.weight[dsu.rt[0]];
     }
 };
- 

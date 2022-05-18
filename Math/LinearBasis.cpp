@@ -1,7 +1,8 @@
 struct LinearBasis {
     vector <int> val;
     int B;
-    LinearBasis(int _B) : B(_B) {val.assign(B, 0);}
+    LinearBasis () = default;
+    LinearBasis (int _B) : B(_B) {val.assign(B, 0);}
     void add(int x) {
         for (int i = B - 1; ~i; --i) if (x >> i & 1) {
             if (!val[i]) {

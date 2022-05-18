@@ -6,7 +6,8 @@ struct EdgeBCC {
     vector <int> low, dep, idx, stk, par;
     vector <bool> bridge; // edge i -> pa[i] is bridge ?
     int n, nbcc;
-    EdgeBCC(int _n) : n(_n), nbcc(0) {
+    EdgeBCC () = default;
+    EdgeBCC (int _n) : n(_n), nbcc(0) {
         low.assign(n, -1), dep.assign(n, -1), idx.assign(n, -1);
         par.assign(n, -1), bridge.assign(n, false);
         for (int i = 0; i < n; ++i) if (dep[i] == -1) {

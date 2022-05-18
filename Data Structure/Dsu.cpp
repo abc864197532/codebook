@@ -1,6 +1,7 @@
 struct Dsu {
     vector <int> rt, sz;
     int n, cc;
+    Dsu () = default;
     Dsu (int _n) : n(_n), cc(_n) {
         rt.resize(n), iota(rt.begin(), rt.end(), 0);
         sz.assign(n, 1);

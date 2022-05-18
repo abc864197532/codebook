@@ -1,10 +1,10 @@
 template <typename T>
 struct BIT {
     // single point add, prefix query sum
-    const int offset = 3;
     vector <T> val;
-    int n;
-    BIT (int _n) : n(_n + offset * 2) {
+    int n, offset;
+    BIT () = default;
+    BIT (int _n, int _offset = 3) : n(_n + offset * 2), offset(_offset) {
         val.assign(n, 0);
     }
     void add(int p, T v) {

@@ -5,6 +5,7 @@ struct TwoSAT {
     vector <int> dfs_ord, idx, solution;
     vector <bool> vis;
     int n, nscc;
+    TwoSAT () = default;
     TwoSAT (int _n) : n(_n), nscc(0) {
         idx.assign(n * 2, -1), vis.assign(n * 2, false), solution.assign(n, -1);
     }

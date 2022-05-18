@@ -5,6 +5,7 @@ struct BinaryLifting {
     vector <int> in, out, dep;
     vector <vector <int>> jump;
     int _t, n, lg;
+    BinaryLifting () = default;
     BinaryLifting (int _n) : n(_n) {
         lg = __lg(n) + 1, _t = 0;
         jump.assign(n, vector <int> (lg, -1));

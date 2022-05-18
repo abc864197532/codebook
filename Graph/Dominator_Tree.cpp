@@ -11,16 +11,7 @@ struct Dominator_tree {
      *           else : idom[u]
      * add edge idom[u] -> u
      */
-    int query(int u, int x = 0) {
-        if (rt[u] == u)
-            return x ? -1 : u;
-        int v = query(rt[u], x + 1);
-        if (v < 0) return u;
-        if (vis[sdom[mn[u]]] > vis[sdom[mn[rt[u]]]])
-            mn[u] = mn[rt[u]];
-        rt[u] = v;
-        return x ? v : mn[u];
-    }
+    Dominator_tree () = default;
     Dominator_tree (int _n, int _s) : n(_n), id(0), s(_s) {
         for (int i = 0; i < n; ++i)
             rt[i] = i, vis[i] = -1;
@@ -48,6 +39,16 @@ struct Dominator_tree {
             newadj[idom[v]].pb(v);
             newadj[v].pb(idom[v]);
         }
+    }
+    int query(int u, int x = 0) {
+        if (rt[u] == u)
+            return x ? -1 : u;
+        int v = query(rt[u], x + 1);
+        if (v < 0) return u;
+        if (vis[sdom[mn[u]]] > vis[sdom[mn[rt[u]]]])
+            mn[u] = mn[rt[u]];
+        rt[u] = v;
+        return x ? v : mn[u];
     }
     void dfs(int v) {
         vis[v] = id, revis[id] = v, id++;

@@ -2,6 +2,7 @@ template <typename T>
 struct SparseTableMax {
     // 0-indexed, [l, r)
     vector <vector <T>> table;
+    SparseTableMax () = default;
     SparseTableMax (vector <T> a) {
         int n = a.size();
         int m = __lg(n) + 1;
@@ -26,6 +27,7 @@ template <typename T>
 struct SparseTableMin {
     // 0-indexed, [l, r)
     vector <vector <T>> table;
+    SparseTableMin () = default;
     SparseTableMin (vector <T> a) {
         int n = a.size();
         int m = __lg(n) + 1;

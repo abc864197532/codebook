@@ -1,6 +1,5 @@
 template <typename T>
 struct MCMF {
-    const T INF = 1 << 30;
     struct Edge {
         int v, id, revid;
         T f, c;
@@ -9,8 +8,9 @@ struct MCMF {
     vector <vector <Edge>> adj;
     vector <pair <int, int>> rt;
     vector <T> dis;
-    int n, s, t;
-    MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t) {
+    int n, s, t; T INF;
+    MCMF () = default;
+    MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t), INF(numeric_limits<T>::max()) {
         adj.resize(n);
     }
     void add_edge(int u, int v, T f, T c) {
@@ -22,19 +22,14 @@ struct MCMF {
         dis.assign(n, INF);
         vector <bool> vis(n, false);
         queue <int> q;
-        q.push(s);
-        dis[s] = 0;
-        vis[s] = true;
-        while (q.size()) {
+        q.push(s), dis[s] = 0, vis[s] = true;
+        while (!q.empty()) {
             int v = q.front(); q.pop();
             vis[v] = false;
             for (Edge &e : adj[v]) if (e.f > 0 && dis[e.v] > dis[v] + e.c) {
-                dis[e.v] = dis[v] + e.c;
-                rt[e.v] = make_pair(v, e.id);
-                if (!vis[e.v]) {
-                    vis[e.v] = true;
-                    q.push(e.v);
-                }
+                dis[e.v] = dis[v] + e.c, rt[e.v] = make_pair(v, e.id);
+                if (!vis[e.v])
+                    vis[e.v] = true, q.push(e.v);
             }
         }
         return dis[t] != INF;
@@ -46,16 +41,14 @@ struct MCMF {
             int v = t;
             T addflow = INF;
             while (v != s) {
-                E.push_back(rt[v]);
                 addflow = min(addflow, adj[rt[v].first][rt[v].second].f);
-                v = rt[v].first;
+                E.push_back(rt[v]), v = rt[v].first;
             }
             for (pair <int, int> a : E) {
                 adj[a.first][a.second].f -= addflow;
                 adj[adj[a.first][a.second].v][adj[a.first][a.second].revid].f += addflow;
             }
-            flow += addflow;
-            cost += addflow * dis[t];
+            flow += addflow, cost += addflow * dis[t];
         }
         return make_pair(cost, flow);
     }
