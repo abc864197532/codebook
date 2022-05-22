@@ -8,5 +8,3 @@ stirling number
 
 Virtual Tree
 Euler Cycle
-
-Matroid Intersection

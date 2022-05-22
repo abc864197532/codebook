@@ -4,7 +4,7 @@ struct BIT {
     vector <T> val;
     int n, offset;
     BIT () = default;
-    BIT (int _n, int _offset = 3) : n(_n + offset * 2), offset(_offset) {
+    BIT (int _n, int _offset = 3) : n(_n + _offset * 2), offset(_offset) {
         val.assign(n, 0);
     }
     void add(int p, T v) {
