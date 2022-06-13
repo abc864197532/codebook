@@ -23,7 +23,7 @@ struct Pt {
 
 bool btw(Pt a, Pt b, Pt c) {
     // c in segment ab?
-    return (a - b) ^ (a - c) == 0 && (c - a) * (c - b) <= 0;
+    return ((a - b) ^ (a - c)) == 0 && ((c - a) * (c - b)) <= 0;
 }
 
 long long area(Pt a, Pt b, Pt c) {

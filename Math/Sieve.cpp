@@ -28,7 +28,7 @@ struct Sieve {
             if (!now.empty() && now.back().first == p)
                 now.back().second++;
             else
-                now.emplace_back(x, 1);
+                now.emplace_back(p, 1);
             x /= p;
         }
         return now;
