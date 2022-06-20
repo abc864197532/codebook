@@ -1,33 +1,38 @@
-struct Trie {  
-    vector <vector <int>> ch;
-    vector <int> cnt;
+struct Trie {
+    int ch[M][2], cnt[M], sz;
     Trie() {extend();}
     void extend() {
-        ch.pb(vector <int>(2, 0));
-        cnt.pb(0);
+        ch[sz][0] = ch[sz][1] = cnt[sz] = 0, sz++;
     }
     int next(int u, int v) {
         if (!ch[u][v]) {
-            ch[u][v] = ch.size();
+            ch[u][v] = sz;
             extend();
         }
         return ch[u][v];
     }
-    void insert(int x) {
+    void add(int x) {
         int now = 0;
-        for (int d = 30; ~d; --d) {
+        for (int d = 29; ~d; --d) {
             now = next(now, x >> d & 1);
+            cnt[now]++;
         }
-        cnt[now]++;
+    }
+    void del(int x) {
+        int now = 0;
+        for (int d = 29; ~d; --d) {
+            now = next(now, x >> d & 1);
+            cnt[now]--;
+        }
     }
     int query(int x) {
         // query max (x xor y)
         int ans = 0, now = 0;
-        for (int d = 30; ~d; --d) {
-            if (ch[now][~x >> d & 1]) {
+        for (int d = 29; ~d; --d) {
+            if (cnt[ch[now][~x >> d & 1]]) {
                 now = ch[now][~x >> d & 1];
                 ans |= 1 << d;
-            } else {
+            } else if (cnt[ch[now][x >> d & 1]]) {
                 now = ch[now][x >> d & 1];
             }
         }

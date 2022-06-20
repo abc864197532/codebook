@@ -1,14 +1,13 @@
 struct TwoSAT {
     // 0-indexed
     // idx i * 2 -> +i, i * 2 + 1 -> -i
-    vector <int> adj[N], radj[N], newadj[N];
+    vector <vector <int>> adj, radj;
     vector <int> dfs_ord, idx, solution;
     vector <bool> vis;
     int n, nscc;
-    // idx i * 2 -> +i, i * 2 + 1 -> -i
     TwoSAT () = default;
     TwoSAT (int _n) : n(_n), nscc(0) {
-        idx.assign(n * 2, -1), vis.assign(n * 2, false), solution.assign(n, -1);
+        adj.resize(n * 2), radj.resize(n * 2);
     }
     void add_clause(int x, int y) {
         // (x or y) = true
@@ -16,9 +15,14 @@ struct TwoSAT {
         adj[nx].push_back(y), radj[y].push_back(nx);
         adj[ny].push_back(x), radj[x].push_back(ny);
     }
-    void if_then(int x, int y) {
+    void add_ifthen(int x, int y) {
         // if x = true then y = true
-        adj[x].pb(y), radj[y].pb(x);
+        add_clause(x ^ 1, y);
+    }
+    void add_must(int x) {
+        // x = true
+        int nx = x ^ 1;
+        adj[nx].pb(x), radj[x].pb(nx);
     }
     void dfs(int v) {
         vis[v] = true;
@@ -32,7 +36,7 @@ struct TwoSAT {
             rdfs(u);
     }
     bool find_sol() {
-        vis.assign(n, false), idx.assign(n, -1);
+        vis.assign(n, false), idx.assign(n, -1), solution.assign(n, -1);
         for (int i = 0; i < n * 2; ++i) if (!vis[i])
             dfs(i);
         reverse(dfs_ord.begin(), dfs_ord.end());
