@@ -5,15 +5,20 @@ struct TwoSAT {
     vector <int> dfs_ord, idx, solution;
     vector <bool> vis;
     int n, nscc;
+    // idx i * 2 -> +i, i * 2 + 1 -> -i
     TwoSAT () = default;
     TwoSAT (int _n) : n(_n), nscc(0) {
         idx.assign(n * 2, -1), vis.assign(n * 2, false), solution.assign(n, -1);
     }
     void add_clause(int x, int y) {
-        // idx i * 2 -> +i, i * 2 + 1 -> -i
+        // (x or y) = true
         int nx = x ^ 1, ny = y ^ 1;
         adj[nx].push_back(y), radj[y].push_back(nx);
         adj[ny].push_back(x), radj[x].push_back(ny);
+    }
+    void if_then(int x, int y) {
+        // if x = true then y = true
+        adj[x].pb(y), radj[y].pb(x);
     }
     void dfs(int v) {
         vis[v] = true;
