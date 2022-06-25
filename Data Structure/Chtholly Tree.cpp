@@ -5,7 +5,7 @@ struct ChthollyTree {
         interval (int _l, int _r, long long _v) : l(_l), r(_r), v(_v) {}
     };
     struct cmp {
-        bool operator () (const interval &a, const interval& b) {
+        bool operator () (const interval &a, const interval& b) const {
             return a.l < b.l;
         }
     };

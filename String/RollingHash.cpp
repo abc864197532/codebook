@@ -6,7 +6,7 @@ struct RollingHash {
         pre.resize(n + 1, 0);
         pw.resize(n + 1, 1);
         for (int i = 1; i <= n; ++i) {
-            pre[i] = ((pre[i - 1] * c) + s[i]) % mod;
+            pre[i] = ((pre[i - 1] * c) + s[i - 1]) % mod;
         }
         for (int i = 1; i <= n; ++i) {
             pw[i] = pw[i - 1] * c % mod;
