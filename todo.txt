@@ -6,5 +6,4 @@ CRT
 Extend GCD
 stirling number
 
-Virtual Tree
 Euler Cycle

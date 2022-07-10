@@ -17,7 +17,7 @@ struct Seg {
     Seg* modify(int p, int v) {
         Seg *now = new (pt++) Seg(*this);
         if (r - l == 1) {
-            val = v;
+            now->val = v;
         } else {
             now->ch[p >= m] = ch[p >= m]->modify(p, v);
             now->pull();
