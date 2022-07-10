@@ -1,3 +1,5 @@
+vector <int> newadj[N];
+
 vector <int> build_virtual_tree(vector <int> a) {
     // need lca
     int sz = a.size();
