@@ -29,12 +29,14 @@ template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     return o << '}';
 }
 template <typename T> struct vv : vector <vector <T>> {
-    vv(int n, int m, T v) : vector <vector <T>> (n, vector <T>(m, v)) {}
-    vv() {}
+    vv (int n, int m, T v) : vector <vector <T>> (n, vector <T>(m, v)) {}
+    vv (int n, int m) : vector <vector <T>> (n, vector <T>(m)) {}
+    vv () {}
 };
 template <typename T> struct vvv : vector <vv <T>> {
-    vvv(int n, int m, int k, T v) : vector <vv <T>> (n, vv <T>(m, k, v)) {}
-    vvv() {}
+    vvv (int n, int m, int k, T v) : vector <vv <T>> (n, vv <T>(m, k, v)) {}
+    vvv (int n, int m, int k) : vector <vv <T>> (n, vv <T>(m, k)) {}
+    vvv () {}
 };
 #ifdef Doludu
 #define test(args...) abc("[" + string(#args) + "]", args)
@@ -43,7 +45,7 @@ template <typename T> struct vvv : vector <vv <T>> {
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
-const int mod = 998244353, N = 300005, logN = 20, K = 111;
+const int mod = 998244353, N = 300005;
 
 int main () {
     owo;

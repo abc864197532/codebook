@@ -66,11 +66,4 @@ struct Dinic {
             }
         }
     }
-    /* Bipartite Matching Restore Answer
-       runBfs();
-       {!vis[x] | x \in L} U {vis[x] | x \in R} 
-
-       Min Cut Restore Answer
-       runBfs();
-       {vis[x] | x \in V} */
 };

@@ -1,50 +1,59 @@
-struct AC {  
-    vector <vector <int>> ch;
-    vector <int> cnt, f;
-    AC () {extend();}
+struct AC {
+    int ch[N][26], to[N][26], fail[N], sz;
+    // need to change here!
+    // vector <int> g[N]; 
+    // int cnt[N];
+    AC () {sz = 0, extend();}
     void extend() {
-        ch.pb(vector <int>(26, 0));
-        cnt.pb(0);
+        fill(ch[sz], ch[sz] + 26, 0), sz++;
     }
-    int next(int u, int v) {
+    int nxt(int u, int v) {
         if (!ch[u][v]) {
-            ch[u][v] = ch.size();
-            extend();
+            ch[u][v] = sz, extend();
         }
         return ch[u][v];
     }
-    void insert(string &s) {
+    int insert(string s) {
         int now = 0;
         for (char c : s)
-            now = next(now, c - 'a');
-        cnt[now]++;
+            now = nxt(now, c - 'a');
+        // cnt[now]++;
+        return now;
     }
     void build_fail() {
-        f.assign(ch.size(), 0);
         queue <int> q;
-        for (int i = 0; i < 26; ++i) if (ch[0][i]) 
+        for (int i = 0; i < 26; ++i) if (ch[0][i]) {
             q.push(ch[0][i]);
-        while (q.size()) {
+            // g[0].push_back(ch[0][i]);
+        }
+        while (!q.empty()) {
             int v = q.front(); q.pop();
+            for (int j = 0; j < 26; ++j) {
+                if (ch[v][j])
+                    to[v][j] = v;
+                else
+                    to[v][j] = to[fail[v]][j];
+            }
             for (int i = 0; i < 26; ++i) if (ch[v][i]) {
-                int k = f[v];
-                while (k && !ch[k][i]) 
-                    k = f[k];
-                if (ch[k][i]) k = ch[k][i];
-                f[ch[v][i]] = k;
-                cnt[ch[v][i]] += cnt[k];
-                q.push(ch[v][i]);
+                int u = ch[v][i], k = fail[v];
+                while (k && !ch[k][i])
+                    k = fail[k];
+                if (ch[k][i])
+                    k = ch[k][i];
+                fail[u] = k;
+                // cnt[u] += cnt[k];
+                // g[k].push_back(u);
+                q.push(u);
             }
         }
     }
     int match(string &s) {
-        int k = 0, ans = 0;
+        int now = 0, ans = 0;
         for (char c : s) {
-            while (k && !ch[k][c - 'a']) 
-                k = f[k];
-            if (ch[k][c - 'a']) 
-                k = ch[k][c - 'a'];
-            ans += cnt[k];
+            now = to[now][c - 'a'];
+            if (ch[now][c - 'a'])
+                now = ch[now][c - 'a'];
+            // ans += cnt[now];
         }
         return ans;
     }

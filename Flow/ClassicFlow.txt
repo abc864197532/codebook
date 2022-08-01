@@ -1,0 +1,41 @@
+Bipartite Matching Restore Answer
+
+runBfs();
+Answer -> {!vis[x] | x \in L} U {vis[x] | x \in R} 
+
+
+Bipartite Minimum Weight Vertex Covering
+
+S -> {x | x \in L}, cap = weight of vertex x
+{x | x \in L} -> {y | y \in R}, cap = INF
+{y | y \in R} -> T, cap = weight of vertex y
+
+For general version, change Dinic to MCMF and:
+
+S -> {x | x \in L}, cap = weight of vertex x, cost = 0
+{x | x \in L} -> {y | y \in R}, cap = INF, cost = -w
+{y | y \in R} -> T, cap = weight of vertex y, cost = 0
+
+
+{Bipartite Maximum Weight Independent Set} + 
+{Bipartite Minimum Weight Vertex Covering} = weight sum
+
+
+Min Cut Model
+
+choose A but not choose B cost x
+A -> B, cap = x
+choose A cost x
+A -> T, cap = x
+not choose A cost x
+S -> A, cap = x
+choose A gain x => not choose A cost x, tot += x
+choose A and choose B cost x -> NO!!!
+Bipartite -> can flip one side
+
+
+Min Cut Restore Answer
+
+runBfs();
+{vis[x] | x \in V}
+

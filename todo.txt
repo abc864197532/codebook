@@ -1,5 +1,3 @@
-Mo's Algorithm With Modification
-
 Miller Rabin
 Pollard Rho
 CRT
