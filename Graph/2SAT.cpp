@@ -36,7 +36,7 @@ struct TwoSAT {
             rdfs(u);
     }
     bool find_sol() {
-        vis.assign(n, false), idx.assign(n, -1), solution.assign(n, -1);
+        vis.assign(n * 2, false), idx.assign(n * 2, -1), solution.assign(n, -1);
         for (int i = 0; i < n * 2; ++i) if (!vis[i])
             dfs(i);
         reverse(dfs_ord.begin(), dfs_ord.end());
