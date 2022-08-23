@@ -35,6 +35,7 @@ struct Seg {
         if (r - l == 1) {
             val = v;
         } else {
+            push();
             ch[p >= m]->set(p, v), pull();
         }
     }

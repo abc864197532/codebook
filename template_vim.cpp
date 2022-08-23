@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define lli long long int
+#define ll long long int
 #define mp make_pair
 #define pb push_back
 #define eb emplace_back
@@ -47,7 +47,15 @@ template <typename T> struct vvv : vector <vv <T>> {
 #endif
 const int mod = 998244353, N = 300005;
 
+void solve () {
+    
+}
+
 int main () {
     owo;
-    
+    int t = 1;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
 }

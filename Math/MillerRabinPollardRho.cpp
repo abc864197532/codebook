@@ -1,8 +1,8 @@
 long long mul(long long x, long long y, long long p) {
     return (x * y - (long long)((long double)x / p * y) * p + p) % p;
 }
-lli modpow(lli a, lli b, lli m) {
-    lli now = 1;
+long long modpow(long long a, long long b, long long m) {
+    long long now = 1;
     for (; b; b >>= 1, a = mul(a, a, m)) {
         if (b & 1) now = mul(now, a, m);
     }
@@ -28,7 +28,6 @@ bool MillerRabin(long long a, long long n) {
 bool prime(long long x) {
     if (x < 2) return false;
     vector <long long> v = {};
-    for (long long a : v) if (a == x) return true;
     for (long long a : v) if (!MillerRabin(a, x)) return false;
     return true;
 }
