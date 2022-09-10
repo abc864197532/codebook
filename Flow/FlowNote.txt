@@ -38,4 +38,3 @@ Min Cut Restore Answer
 
 runBfs();
 {vis[x] | x \in V}
-

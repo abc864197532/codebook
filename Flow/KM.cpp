@@ -7,8 +7,7 @@ struct KM { // 0-base
     queue <int> q; 
     void init(int _n) {
         n = _n;
-        for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j)
-            w[i][j] = -INF;
+        for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j) w[i][j] = -INF;
     }
     void add_edge(int a, int b, int wei) {
         w[a][b] = wei;
@@ -19,10 +18,8 @@ struct KM { // 0-base
         return 0;
     }
     void Bfs(int s) {
-        fill(slk, slk + n, INF);
-        fill(vl, vl + n, 0), fill(vr, vr + n, 0);
-        q.push(s);
-        vr[s] = 1;
+        fill(slk, slk + n, INF), fill(vl, vl + n, 0), fill(vr, vr + n, 0);
+        q.push(s), vr[s] = 1;
         while (1) {
             T d;
             while (!q.empty()) {
@@ -40,15 +37,12 @@ struct KM { // 0-base
                 else slk[x] -= d;
                 if (vr[x]) hr[x] -= d;
             }
-            for (int x = 0; x < n; ++x)
-                if (!vl[x] && !slk[x] && !Check(x)) return;
+            for (int x = 0; x < n; ++x) if (!vl[x] && !slk[x] && !Check(x)) return;
         }
     }
     T Solve() {
-        fill(fl, fl + n, -1), fill(fr, fr + n, -1),
-        fill(hr, hr + n, 0);
-        for (int i = 0; i < n; ++i)
-            hl[i] = *max_element(w[i], w[i] + n);
+        fill(fl, fl + n, -1), fill(fr, fr + n, -1), fill(hr, hr + n, 0);
+        for (int i = 0; i < n; ++i) hl[i] = *max_element(w[i], w[i] + n);
         for (int i = 0; i < n; ++i) Bfs(i);
         T res = 0;
         for (int i = 0; i < n; ++i) res += w[i][fl[i]];

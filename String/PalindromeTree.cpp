@@ -22,6 +22,11 @@ struct PAM {
             lst = ch[lst][s[i] - 'a'], cnt[lst]++;
         }
     }
+    void build_count() {
+        for (int i = sz - 1; i > 1; --i) {
+            cnt[fail[i]] += cnt[i];
+        }
+    }
     int extend() {
         fill(ch[sz], ch[sz] + 26, 0), sz++;
         return sz - 1;

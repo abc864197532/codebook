@@ -1,55 +1,50 @@
-template <typename T>
 struct MCMF {
-    struct Edge {
-        int v, id, revid;
-        T f, c;
-        Edge (int _v, T _f, T _c, int _id, int _revid) : v(_v), f(_f), c(_c), id(_id), revid(_revid) {}
+    const int INF = 1 << 30;
+    struct edge {
+        int v, f, c;
+        edge (int _v, int _f, int _c) : v(_v), f(_f), c(_c) {}
     };
-    vector <vector <Edge>> adj;
-    vector <pair <int, int>> rt;
-    vector <T> dis;
-    int n, s, t; T INF;
-    MCMF () = default;
-    MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t), INF(numeric_limits<T>::max()) {
+    vector <edge> E;
+    vector <vector <int>> adj;
+    vector <int> dis, rt;
+    int n, s, t;
+    MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t) {
         adj.resize(n);
     }
-    void add_edge(int u, int v, T f, T c) {
-        adj[u].push_back(Edge(v, f, c, adj[u].size(), adj[v].size()));
-        adj[v].push_back(Edge(u, 0, -c, adj[v].size(), adj[u].size() - 1));
+    void add_edge(int u, int v, int f, int c) {
+        adj[u].pb(E.size()), E.pb(edge(v, f, c));
+        adj[v].pb(E.size()), E.pb(edge(u, 0, -c));
     }
     bool SPFA() {
-        rt.assign(n, make_pair(-1, -1));
-        dis.assign(n, INF);
+        rt.assign(n, -1), dis.assign(n, INF);
         vector <bool> vis(n, false);
         queue <int> q;
         q.push(s), dis[s] = 0, vis[s] = true;
         while (!q.empty()) {
             int v = q.front(); q.pop();
             vis[v] = false;
-            for (Edge &e : adj[v]) if (e.f > 0 && dis[e.v] > dis[v] + e.c) {
-                dis[e.v] = dis[v] + e.c, rt[e.v] = make_pair(v, e.id);
-                if (!vis[e.v])
-                    vis[e.v] = true, q.push(e.v);
+            for (int id : adj[v]) if (E[id].f > 0 && dis[E[id].v] > dis[v] + E[id].c) {
+                dis[E[id].v] = dis[v] + E[id].c, rt[E[id].v] = id;
+                if (!vis[E[id].v]) vis[E[id].v] = true, q.push(E[id].v);
             }
         }
         return dis[t] != INF;
     }
-    pair <T, T> runFlow() { // cost, flow
-        T cost = 0, flow = 0;
+    pair <int, int> runFlow() {
+        int cost = 0, flow = 0;
         while (SPFA()) {
-            vector <pair <int, int>> E;
-            int v = t;
-            T addflow = INF;
-            while (v != s) {
-                addflow = min(addflow, adj[rt[v].first][rt[v].second].f);
-                E.push_back(rt[v]), v = rt[v].first;
+            int now = t, add = INF;
+            while (now != s) {
+                add = min(add, E[rt[now]].f);
+                now = E[rt[now] ^ 1].v;
             }
-            for (pair <int, int> a : E) {
-                adj[a.first][a.second].f -= addflow;
-                adj[adj[a.first][a.second].v][adj[a.first][a.second].revid].f += addflow;
+            now = t;
+            while (now != s) {
+                E[rt[now]].f -= add, E[rt[now] ^ 1].f += add;
+                now = E[rt[now] ^ 1].v;
             }
-            flow += addflow, cost += addflow * dis[t];
+            flow += add, cost += add * dis[t];
         }
-        return make_pair(cost, flow);
+        return make_pair(flow, cost);
     }
 };
