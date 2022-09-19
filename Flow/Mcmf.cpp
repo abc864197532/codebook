@@ -6,7 +6,7 @@ struct MCMF {
     };
     vector <edge> E;
     vector <vector <int>> adj;
-    vector <int> dis, rt;
+    vector <int> dis, pot, rt;
     int n, s, t;
     MCMF (int _n, int _s, int _t) : n(_n), s(_s), t(_t) {
         adj.resize(n);
@@ -23,27 +23,45 @@ struct MCMF {
         while (!q.empty()) {
             int v = q.front(); q.pop();
             vis[v] = false;
-            for (int id : adj[v]) if (E[id].f > 0 && dis[E[id].v] > dis[v] + E[id].c) {
-                dis[E[id].v] = dis[v] + E[id].c, rt[E[id].v] = id;
+            for (int id : adj[v]) if (E[id].f > 0 && dis[E[id].v] > dis[v] + E[id].c + pot[v] - pot[E[id].v]) {
+                dis[E[id].v] = dis[v] + E[id].c + pot[v] - pot[E[id].v], rt[E[id].v] = id;
                 if (!vis[E[id].v]) vis[E[id].v] = true, q.push(E[id].v);
             }
         }
         return dis[t] != INF;
     }
-    pair <int, int> runFlow() {
-        int cost = 0, flow = 0;
-        while (SPFA()) {
-            int now = t, add = INF;
-            while (now != s) {
-                add = min(add, E[rt[now]].f);
-                now = E[rt[now] ^ 1].v;
+    bool dijkstra() {
+        rt.assign(n, -1), dis.assign(n, INF);
+        priority_queue <pair <int, int>, vector <pair <int, int>>, greater <pair <int, int>>> pq;
+        dis[s] = 0, pq.emplace(dis[s], s);
+        while (!pq.empty()) {
+            int d, v; tie(d, v) = pq.top(); pq.pop();
+            if (dis[v] < d) continue;
+            for (int id : adj[v]) if (E[id].f > 0 && dis[E[id].v] > dis[v] + E[id].c + pot[v] - pot[E[id].v]) {
+                dis[E[id].v] = dis[v] + E[id].c + pot[v] - pot[E[id].v], rt[E[id].v] = id;
+                pq.emplace(dis[E[id].v], E[id].v);
             }
-            now = t;
-            while (now != s) {
-                E[rt[now]].f -= add, E[rt[now] ^ 1].f += add;
-                now = E[rt[now] ^ 1].v;
+        }
+        return dis[t] != INF;
+    }
+    pair <int, int> runFlow() {
+        pot.assign(n, 0);
+        int cost = 0, flow = 0;
+        bool fr = true;
+        while ((fr ? SPFA() : dijkstra())) {
+            for (int i = 0; i < n; i++) {
+                dis[i] += pot[i] - pot[s];
+            }
+            int add = INF;
+            for (int i = t; i != s; i = E[rt[i] ^ 1].v) {
+                add = min(add, E[rt[i]].f);
+            }
+            for (int i = t; i != s; i = E[rt[i] ^ 1].v) {
+                E[rt[i]].f -= add, E[rt[i] ^ 1].f += add;
             }
             flow += add, cost += add * dis[t];
+            fr = false;
+            swap(dis, pot);
         }
         return make_pair(flow, cost);
     }
