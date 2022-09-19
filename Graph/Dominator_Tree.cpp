@@ -1,61 +1,48 @@
-vector <int> adj[N], radj[N];
- 
 struct Dominator_tree {
-    int vis[N], revis[N], sdom[N], idom[N], par[N], n, id, s, rt[N], mn[N];
-    vector <int> bucket[N], newadj[N];
-    /* sdom[w] = for all (v, w) \in E
-     *           if v < w : v
-     *           else : sdom(u), u = anc(v)
-     * idom[w] = for u from sdom[w] to w, let x = min(sdom[u])
-     *           if sdom[u] == sdom[w] : sdom[w]
-     *           else : idom[u]
-     * add edge idom[u] -> u
-     */
-    Dominator_tree () = default;
-    Dominator_tree (int _n, int _s) : n(_n), id(0), s(_s) {
-        for (int i = 0; i < n; ++i)
-            rt[i] = i, vis[i] = -1;
-        // s -> root of dominator tree
-        dfs(s);
-        for (int i = id - 1; ~i; --i) {
-            int v = revis[i];
-            for (int u : radj[v]) {
-                int x = query(u);
-                if (vis[sdom[v]] > vis[sdom[x]]) sdom[v] = sdom[x];
-            }
-            if (i) 
-                bucket[sdom[v]].pb(v);
-            for (int u : bucket[v]) {
-                int x = query(u);
-                idom[u] = sdom[u] == sdom[x] ? sdom[u] : x;
-            }
-            if (i) 
-                rt[v] = par[v];
-        }
-        for (int i = 1; i < id; ++i) {
-            int v = revis[i];
-            if (idom[v] != sdom[v]) 
-                idom[v] = idom[idom[v]];
-            newadj[idom[v]].pb(v);
-            newadj[v].pb(idom[v]);
-        }
+    int n, id;
+    vector <vector <int>> adj, radj, bucket;
+    vector <int> sdom, dom, vis, rev, par, rt, mn;
+    Dominator_tree (int _n) : n(_n), id(0) {
+        adj.resize(n), radj.resize(n), bucket.resize(n);
+        sdom.resize(n), dom.resize(n, -1), vis.resize(n, -1);
+        rev.resize(n), rt.resize(n), mn.resize(n), par.resize(n);
     }
-    int query(int u, int x = 0) {
-        if (rt[u] == u)
-            return x ? -1 : u;
-        int v = query(rt[u], x + 1);
-        if (v < 0) return u;
-        if (vis[sdom[mn[u]]] > vis[sdom[mn[rt[u]]]])
-            mn[u] = mn[rt[u]];
-        rt[u] = v;
-        return x ? v : mn[u];
+    void add_edge(int u, int v) {adj[u].pb(v);}
+    int query(int v, bool x) {
+        if (rt[v] == v) return x ? -1 : v;
+        int p = query(rt[v], true);
+        if (p == -1) return x ? rt[v] : mn[v];
+        if (sdom[mn[v]] > sdom[mn[rt[v]]]) mn[v] = mn[rt[v]];
+        rt[v] = p;
+        return x ? p : mn[v];
     }
     void dfs(int v) {
-        vis[v] = id, revis[id] = v, id++;
-        idom[v] = sdom[v] = mn[v] = v;
-        for (int u : adj[v]) if (vis[u] == -1) {
-            par[u] = v;
-            dfs(u);
+        vis[v] = id, rev[id] = v;
+        rt[id] = mn[id] = sdom[id] = id, id++;
+        for (int u : adj[v]) {
+            if (vis[u] == -1) dfs(u), par[vis[u]] = vis[v];
+            radj[vis[u]].pb(vis[v]);
         }
+    }
+    void build(int s) {
+        dfs(s);
+        for (int i = id - 1; ~i; --i) {
+            for (int u : radj[i]) {
+                sdom[i] = min(sdom[i], sdom[query(u, false)]);
+            }
+            if (i) bucket[sdom[i]].pb(i);
+            for (int u : bucket[i]) {
+                int p = query(u, false);
+                dom[u] = sdom[p] == i ? i : p;
+            }
+            if (i) rt[i] = par[i];
+        }
+        vector <int> res(n, -1);
+        for (int i = 1; i < id; ++i) {
+            if (dom[i] != sdom[i]) dom[i] = dom[dom[i]];
+        }
+        for (int i = 1; i < id; ++i) res[rev[i]] = rev[dom[i]];
+        res[s] = s;
+        dom = res;
     }
 };
