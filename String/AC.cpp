@@ -30,7 +30,7 @@ struct AC {
             int v = q.front(); q.pop();
             for (int j = 0; j < 26; ++j) {
                 if (ch[v][j])
-                    to[v][j] = ch[v][j];
+                    to[v][j] = v;
                 else
                     to[v][j] = to[fail[v]][j];
             }
