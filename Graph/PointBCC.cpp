@@ -1,51 +1,53 @@
-vector <int> adj[N];
+vector <int> adj[N], newadj[N << 1], bcc[N];
+pii E[M];
+bool vis[N], vis2[M], cut[N];
+vector <int> stk;
+int low[N], dep[N], nbcc;
 
-struct PointBCC {
-    vector <int> newadj[N << 1];
-    vector <vector <int>> idx;
-    vector <int> low, dep, par, stk;
-    vector <bool> cut;
-    int n, nbcc;
-    PointBCC () = default;
-    PointBCC (int _n) : n(_n), nbcc(0) {
-        low.assign(n, -1), dep.assign(n, -1), idx.assign(n, vector <int> ());
-        par.assign(n, -1), cut.assign(n, false);
-        for (int i = 0; i < n; ++i) if (dep[i] == -1)
-            dfs(i, -1);
-        // idx  < n -> bcc
-        // idx >= n -> cut point
-        for (int i = 0; i < n; ++i) if (cut[i]) {
-            for (int j : idx[i]) {
-                newadj[j].push_back(i + n);
-                newadj[i + n].push_back(j);
-            }
-        }
-    }
-    void dfs(int v, int pa) {
-        low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
-        stk.push_back(v);
-        par[v] = pa;
-        int ch = 0;
-        for (int u : adj[v]) if (u != pa) {
-            if (dep[u] == -1) {
-                dfs(u, v);
-                low[v] = min(low[v], low[u]);
-                ch++;
-                if (low[u] >= dep[v]) {
-                    // v is a cut point
-                    cut[v] = true;
-                    int x;
-                    do {
-                        x = stk.back(), stk.pop_back();
-                        idx[x].push_back(nbcc);
-                    } while (x != u);
-                    idx[v].push_back(nbcc++);
-                }
-            } else {
-                low[v] = min(low[v], dep[u]);
+void dfs(int v, int pa, int w = -1) {
+    if (~w) stk.pb(w), vis2[w] = true;
+    low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
+    vis[v] = true;
+    for (int id : adj[v]) {
+        int u = E[id].first ^ E[id].second ^ v, ch = 0;
+        if (vis[u]) {
+            if (!vis2[id]) stk.pb(id), vis2[id] = true;
+            low[v] = min(low[v], dep[u]);
+        } else {
+            dfs(u, v, id);
+            ch++;
+            low[v] = min(low[v], low[u]);
+            if (low[u] >= dep[v]) {
+                cut[v] = true;
+                int x;
+                do {
+                    x = stk.back(); stk.pop_back();
+                    bcc[nbcc].push_back(x);
+                } while (x != id);
+                nbcc++;
             }
         }
         if (pa == -1 && ch < 2) 
             cut[v] = false;
     }
-};
+}
+
+void build() {
+    fill(vis, vis + N, false), fill(vis2, vis2 + M, false);
+    fill(cut, cut + N, false), nbcc = 0;
+    dfs(0, -1);
+    for (int i = 0; i < nbcc; ++i) {
+        vector <int> V;
+        for (int id : bcc[i]) {
+            V.pb(E[id].first);
+            V.pb(E[id].second);
+        }
+        sort(all(V)), V.resize(unique(all(V)) - V.begin());
+        // id  < N -> vertex
+        // id >= N -> bcc
+        for (int v : V) {
+            newadj[i + N].push_back(v);
+            newadj[v].push_back(i + N);
+        }
+    }
+}
