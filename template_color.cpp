@@ -9,7 +9,7 @@ using namespace std;
 #define Y second
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-void abc() {cout << endl;}
+void abc() {cout << "\e[0m\n";}
 template <typename T, typename ...U> void abc(T a, U ...b) {
     cout << a << ' ', abc(b...);
 }
@@ -21,6 +21,11 @@ template <typename A, typename B> istream& operator >> (istream& o, pair<A, B> &
 }
 template <typename A, typename B> ostream& operator << (ostream& o, pair<A, B> a) {
     return o << '(' << a.X << ", " << a.Y << ')';
+}
+template <typename T, size_t N> ostream& operator << (ostream& o, array<T, N> a) {
+    bool is = false;
+    for (T i : a) {o << (is ? ' ' : '{'), is = true, o << i;}
+    return o << '}';
 }
 template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     bool is = false;
@@ -39,15 +44,15 @@ template <typename T> struct vvv : vector <vv <T>> {
     vvv () {}
 };
 #ifdef Doludu
-#define test(args...) abc("[" + string(#args) + "]", args)
-#define owo void(0)
+#define test(args...) cout << "\e[1;31m[" << string(#args) << "] \e[1;34m", abc(args)
+#define owo freopen("input.txt", "r", stdin)
 #else
 #define test(args...) void(0)
 #define owo ios::sync_with_stdio(false); cin.tie(0)
 #endif
 const int mod = 998244353, N = 300005;
 
-void solve () {
+void solve() {
     
 }
 

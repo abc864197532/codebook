@@ -22,6 +22,11 @@ template <typename A, typename B> istream& operator >> (istream& o, pair<A, B> &
 template <typename A, typename B> ostream& operator << (ostream& o, pair<A, B> a) {
     return o << '(' << a.X << ", " << a.Y << ')';
 }
+template <typename T, size_t N> ostream& operator << (ostream& o, array<T, N> a) {
+    bool is = false;
+    for (T i : a) {o << (is ? ' ' : '{'), is = true, o << i;}
+    return o << '}';
+}
 template <typename T> ostream& operator << (ostream& o, vector<T> a) {
     bool is = false;
     if (a.empty()) return o << "{}";
