@@ -53,4 +53,8 @@ struct mat {
         }
         return ans;
     }
+    mat& operator = (mat o) {
+        this->n = o.n, this->val = o.val, this->mod2 = o.mod2;
+        return *this;
+    }
 };
