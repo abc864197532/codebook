@@ -8,13 +8,15 @@ struct BIT {
         val.assign(n, 0);
     }
     void add(int p, T v) {
-        for (p += offset; p < n; p += p & (-p))
+        for (p += offset; p < n; p += p & (-p)) {
             val[p] += v;
+        }
     }
     T query(int p) {
         T ans = 0;
-        for (p += offset; p > 0; p -= p & (-p))
+        for (p += offset; p > 0; p -= p & (-p)) {
             ans += val[p];
+        }
         return ans;
     }
     T query(int l, int r) {
@@ -26,7 +28,9 @@ struct BIT {
         // 1 <= k && k <= current size
         int ans = 0;
         for (int i = 1 << __lg(n); i > 0; i >>= 1) {
-            if (ans + i < n && val[ans + i] < k) k -= val[ans += i];
+            if (ans + i < n && val[ans + i] < k) {
+                k -= val[ans += i];
+            }
         }
         return ans - offset + 1;
     }

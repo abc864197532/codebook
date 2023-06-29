@@ -23,8 +23,9 @@ struct Seg {
 				best = cur;
 			}
 		} else {
-			if (cur.m < best.m)
+			if (cur.m < best.m) {
 				swap(cur, best);
+			}
 			if (cur.f(m) > best.f(m)) {
 				swap(cur, best);
 				ch[0]->add(cur);
@@ -34,8 +35,9 @@ struct Seg {
 		}
 	}
 	long long query(int x) {
-		if (r - l == 1)
+		if (r - l == 1) {
 			return best.f(x);
+		}
 		return max(best.f(x), ch[x >= m]->query(x));
 	}
 };
@@ -59,8 +61,9 @@ struct Seg {
 				best = cur;
 			}
 		} else {
-			if (cur.m < best.m)
+			if (cur.m < best.m) {
 				swap(cur, best);
+			}
 			if (cur.f(m) < best.f(m)) {
 				swap(cur, best);
 				ch[1]->add(cur);
@@ -70,8 +73,9 @@ struct Seg {
 		}
 	}
 	long long query(int x) {
-		if (r - l == 1)
+		if (r - l == 1) {
 			return best.f(x);
+		}
 		return min(best.f(x), ch[x >= m]->query(x));
 	}
 };

@@ -36,14 +36,17 @@ struct ChthollyTree {
             ans.pb(interval(it->l, r, it->v));
             re.pb(interval(r, it->r, it->v));
         }
-        for (interval &i : del) 
+        for (interval &i : del) {
             s.erase(i);
-        for (interval &i : re) 
+        }
+        for (interval &i : re) {
             s.insert(i);
+        }
         return ans;
     }
     void merge(vector <interval> a) {
-        for (interval &i : a)
+        for (interval &i : a) {
             s.insert(i);
+        }
     }
 };

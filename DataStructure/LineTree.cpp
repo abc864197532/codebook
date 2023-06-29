@@ -10,19 +10,23 @@ struct LineTree {
         vector <vector <int>> cc, weight;
         vector <int> rt;
         Dsu (int n) {
-            for (int i = 0; i < n; ++i)
+            for (int i = 0; i < n; ++i) {
                 cc.pb({i}), weight.pb({}), rt.pb(i);
+            }
         }
         void Union(int u, int v, int w) {
             assert(rt[u] != rt[v]);
             u = rt[u], v = rt[v];
-            if (cc[u].size() > cc[v].size())
+            if (cc[u].size() > cc[v].size()) {
                 swap(u, v);
+            }
             weight[v].pb(w);
-            for (int i : cc[u])
+            for (int i : cc[u]) {
                 cc[v].pb(i), rt[i] = v;
-            for (int w : weight[u])
+            }
+            for (int w : weight[u]) {
                 weight[v].pb(w);
+            }
             cc[u].clear(), weight[u].clear();
         }
     };

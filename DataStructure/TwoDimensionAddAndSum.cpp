@@ -18,7 +18,7 @@ struct TwoDimensionAddAndSum {
         void push() {
             ch[0]->give(lza, lzb), ch[1]->give(lza, lzb), lza = lzb = 0;
         }
-        void add(int a, int b, int va, int vb) {
+        void add(int a, int b, long long va, long long vb) {
             if (a <= l && r <= b)
                 give(va, vb);
             else {
@@ -30,7 +30,7 @@ struct TwoDimensionAddAndSum {
                 pull();
             }
         }
-        long long query(int a, int b, int v) {
+        long long query(int a, int b, long long v) {
             if (a <= l && r <= b)
                 return vala * v + valb;
             push();
@@ -42,11 +42,10 @@ struct TwoDimensionAddAndSum {
             return ans;
         }
     };
-    // note integer overflow.
-    vector <array <int, 4>> E[N];
-    vector <array <int, 4>> Q[N];
+    vector <array <long long, 4>> E[N];
+    vector <array <long long, 4>> Q[N];
     vector <long long> ans;
-    void add_event(int x1, int y1, int x2, int y2, int v) {
+    void add_event(int x1, int y1, int x2, int y2, long long v) {
         E[x1].pb({y1, y2,  v, -v * x1});
         E[x2].pb({y1, y2, -v, v * x2});
     }

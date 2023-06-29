@@ -16,10 +16,12 @@ struct Dsu {
     }
     bool Union(int v, int u) {
         u = Find(u), v = Find(v);
-        if (u == v)
+        if (u == v) {
             return false;
-        if (sz[u] > sz[v])
+        }
+        if (sz[u] > sz[v]) {
             swap(u, v);
+        }
         stk.push({u, rt[u], v, sz[v]});
         rt[u] = v;
         sz[v] += sz[u];

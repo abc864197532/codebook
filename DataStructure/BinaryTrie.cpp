@@ -1,9 +1,10 @@
 struct Trie {
     int ch[M][2], cnt[M], sz;
-    Trie() {extend();}
+    Trie() { extend(); }
     void extend() {
         ch[sz][0] = ch[sz][1] = cnt[sz] = 0, sz++;
     }
+    void reset() { sz = 0, extend(); }
     int next(int u, int v) {
         if (!ch[u][v]) {
             ch[u][v] = sz;
